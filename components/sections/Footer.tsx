@@ -22,7 +22,9 @@ export function Footer({ restaurant }: Props) {
       <div className="container grid gap-10 py-14 md:grid-cols-12">
         <div className="md:col-span-4">
           <div className="bg-surface-warm inline-block rounded-card p-3">
-            <Logo brand={brand} width={160} />
+            {/* Matches previous footer size (~160 px); kept fixed across breakpoints because
+                the dark footer doesn't have the same overpower-the-page concern as the nav. */}
+            <Logo brand={brand} className="w-[160px]" sizes="160px" />
           </div>
           <p className="mt-4 text-sm text-surface/70">
             {restaurant.tagline} · {restaurant.address.city}, {restaurant.address.state}

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ButtonLink } from "@/components/ui/Button";
 import { OpenNowBadge } from "@/components/OpenNowBadge";
 import { MapPin, Phone } from "lucide-react";
+import { fillTenure, yearsSince } from "@/lib/tenure";
 import type { RestaurantContent } from "@/types/content";
 
 interface Props {
@@ -15,7 +16,10 @@ function displayPhone(intl: string) {
 }
 
 export function Hero({ restaurant }: Props) {
-  const yearsOpen = new Date().getFullYear() - restaurant.foundedYear;
+  // Both the subhead and the info row derive from foundedYear — keeping the two phrasings
+  // pinned to the same number so they can't drift apart in copy edits.
+  const yearsOpen = yearsSince(restaurant.foundedYear);
+  const subhead = fillTenure(restaurant.hero.subhead, restaurant.foundedYear);
   const headline = restaurant.hero.headline ?? restaurant.name;
 
   return (
@@ -51,7 +55,7 @@ export function Hero({ restaurant }: Props) {
             {headline}
           </h1>
           <p className="mt-5 max-w-xl text-base text-surface/90 md:text-lg">
-            {restaurant.hero.subhead}
+            {subhead}
           </p>
 
           <ul className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-surface/90">

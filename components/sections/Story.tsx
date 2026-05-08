@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { fillTenure } from "@/lib/tenure";
 import type { RestaurantContent } from "@/types/content";
 
 interface Props {
@@ -7,6 +8,11 @@ interface Props {
 
 export function Story({ restaurant }: Props) {
   const { story } = restaurant;
+  // Substitute `{years}` per paragraph so any tenure-bearing prose tracks foundedYear without
+  // duplicating the integer here.
+  const paragraphs = story.paragraphs.map((p) =>
+    fillTenure(p, restaurant.foundedYear)
+  );
   return (
     <section
       id="story"
@@ -45,7 +51,7 @@ export function Story({ restaurant }: Props) {
           </h2>
 
           <div className="mt-6 space-y-5 text-[1.0625rem] leading-relaxed text-ink">
-            {story.paragraphs.map((p, i) => (
+            {paragraphs.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
           </div>
