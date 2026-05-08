@@ -6,6 +6,28 @@ import type { RestaurantContent } from "@/types/content";
  *
  * Items marked with a // CONFIRM comment are pending verification with the owner (Beverly Jacobs)
  * and should be revisited before v1.1. See README.md "Open Questions" section.
+ *
+ * ─── Image filename convention ────────────────────────────────────────────────────────────────
+ * Every asset under /public/gallery/ follows the pattern:
+ *
+ *     [brand]-[subject]-[location].jpg
+ *
+ * where:
+ *   • [brand]    = merchant slug or natural name, lowercase, hyphenated
+ *                  (e.g. `bamboo-fire-cafe`, or contracted to `bamboo-fire` when the dish name
+ *                  already carries enough specificity)
+ *   • [subject]  = what the photo actually shows — dish name, room, exterior, etc.
+ *                  (e.g. `dining-room`, `jerk-chicken-rice-plantains`, `red-snapper-banana-leaf`)
+ *   • [location] = city, neighborhood, or street, lowercase, hyphenated
+ *                  (e.g. `delray-beach`, `delray`, `ne-4th-ave-delray`)
+ *
+ * This is the canonical SEO convention for every Lōcal merchant. Image filenames are weakly
+ * indexed by Google (less than alt text, but they DO surface in image search), so the pattern
+ * gets us a free signal without imposing on copywriters. Mirror the same descriptors into the
+ * `alt` field on each gallery entry below — alt text is the primary signal, the filename is
+ * the reinforcing one. When real photos replace these placeholders, keep the same filenames so
+ * URLs and any external references don't break.
+ * ─────────────────────────────────────────────────────────────────────────────────────────────
  */
 export const restaurant: RestaurantContent = {
   slug: "bamboo-fire-cafe",
@@ -50,7 +72,7 @@ export const restaurant: RestaurantContent = {
     // hero, info row, and Story prose all reading the same number — never let two of them drift.
     subhead:
       "Family-owned Caribbean and world cuisine, rooted in Guyana and at home in Delray Beach for {years} years.",
-    backgroundImage: "/gallery/hero-placeholder.jpg", // PLACEHOLDER until Beverly supplies a hero shot
+    backgroundImage: "/gallery/bamboo-fire-cafe-caribbean-restaurant-delray-beach.jpg", // PLACEHOLDER until Beverly supplies a hero shot — keep this filename when the real image replaces it
     backgroundAlt:
       "Plates of jerk chicken, oxtail and curry shrimp on a wooden table at Bamboo Fire Cafe",
   },
@@ -153,15 +175,46 @@ export const restaurant: RestaurantContent = {
       "Catering menu coming soon. For private events, family-style trays and large orders, email us and we'll quote you fast.",
   },
 
-  // V1 placeholders — Facebook image URLs to be swapped in once Beverly approves the specific shots.
-  // For now, six neutral placeholders are referenced from /public/gallery (see README).
+  // V1 placeholders — gradient blocks generated at build setup; replace with real photography in
+  // v1.1. KEEP THE SAME FILENAMES when swapping in real images so external references and any
+  // search-engine-cached URLs don't 404. Filename convention is documented at the top of this file.
   gallery: [
-    { src: "/gallery/placeholder-1.jpg", alt: "Bamboo Fire Cafe dining room", width: 1200, height: 800 },
-    { src: "/gallery/placeholder-2.jpg", alt: "Jerk chicken plate with rice and plantains", width: 1200, height: 800 },
-    { src: "/gallery/placeholder-3.jpg", alt: "Curry goat and roti", width: 1200, height: 800 },
-    { src: "/gallery/placeholder-4.jpg", alt: "Oxtail in gravy with rice and peas", width: 1200, height: 800 },
-    { src: "/gallery/placeholder-5.jpg", alt: "Red snapper baked in banana leaf", width: 1200, height: 800 },
-    { src: "/gallery/placeholder-6.jpg", alt: "Restaurant exterior on NE 4th Avenue", width: 1200, height: 800 },
+    {
+      src: "/gallery/bamboo-fire-cafe-dining-room-delray-beach.jpg",
+      alt: "Bamboo Fire Cafe dining room in Delray Beach",
+      width: 1200,
+      height: 800,
+    },
+    {
+      src: "/gallery/jerk-chicken-rice-plantains-bamboo-fire-delray.jpg",
+      alt: "Jerk chicken plate with rice and plantains at Bamboo Fire Cafe in Delray Beach",
+      width: 1200,
+      height: 800,
+    },
+    {
+      src: "/gallery/curry-goat-roti-bamboo-fire-delray-beach.jpg",
+      alt: "Curry goat and roti at Bamboo Fire Cafe in Delray Beach",
+      width: 1200,
+      height: 800,
+    },
+    {
+      src: "/gallery/oxtail-rice-and-peas-bamboo-fire-delray.jpg",
+      alt: "Oxtail in gravy with rice and peas at Bamboo Fire Cafe in Delray Beach",
+      width: 1200,
+      height: 800,
+    },
+    {
+      src: "/gallery/red-snapper-banana-leaf-caribbean-delray.jpg",
+      alt: "Red snapper baked in banana leaf at Bamboo Fire Cafe, Caribbean restaurant in Delray Beach",
+      width: 1200,
+      height: 800,
+    },
+    {
+      src: "/gallery/bamboo-fire-cafe-exterior-ne-4th-ave-delray.jpg",
+      alt: "Bamboo Fire Cafe exterior on NE 4th Avenue in Delray Beach",
+      width: 1200,
+      height: 800,
+    },
   ],
 
   press: [
