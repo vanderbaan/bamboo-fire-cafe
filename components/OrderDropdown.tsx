@@ -102,6 +102,26 @@ export function OrderDropdown({ ordering }: Props) {
 
   const close = () => setOpen(false);
 
+  /**
+   * On open, also smooth-scroll to the menu so the customer sees what they're choosing
+   * between while the popover reveals their pickup/delivery options. We skip the scroll
+   * on close — auto-scrolling on dismiss would feel hostile.
+   *
+   * scrollIntoView is a no-op when the section is already in view, so a click while sitting
+   * at the menu just opens the popover (no scroll, no jump).
+   *
+   * Note: html `scroll-padding-top` (set in app/globals.css) keeps the section's top edge
+   * from sliding under the sticky nav header.
+   */
+  const handleTriggerClick = () => {
+    if (!open) {
+      document
+        .getElementById("menu")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    setOpen((v) => !v);
+  };
+
   const deliveryLabel = ordering.delivery
     ? DELIVERY_LABEL[ordering.delivery.provider] ?? "delivery"
     : null;
@@ -116,7 +136,7 @@ export function OrderDropdown({ ordering }: Props) {
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={menuId}
-        onClick={() => setOpen((v) => !v)}
+        onClick={handleTriggerClick}
         className="gap-1.5"
       >
         Order
