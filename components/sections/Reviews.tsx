@@ -49,9 +49,15 @@ function StatCardCompact({ stat }: { stat: ReviewStat }) {
 }
 
 /**
- * Featured stat card — bamboo-tinted, larger type, spans 6 cols + 2 rows on desktop so it
+ * Featured stat card — bamboo-tinted, oversized type, spans 6 cols + 2 rows on desktop so it
  * dominates the left half. On tablet (sm) takes the full row above the 2×2 grid; on mobile
  * sits at the top, full-width.
+ *
+ * Type scale is tuned for the typical "rating + ★" featured platform (Google here). If a
+ * future merchant features a platform whose `label` is multi-word (Facebook's "% recommend",
+ * say), the label-line typography would be too large — the card would still render, but
+ * "% recommend" at text-8xl would dominate the rating. If that comes up, branch on label
+ * length here rather than restructuring the layout.
  */
 function StatCardFeatured({ stat }: { stat: ReviewStat }) {
   return (
@@ -60,19 +66,24 @@ function StatCardFeatured({ stat }: { stat: ReviewStat }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`See ${stat.platform} reviews for the restaurant (opens in a new tab)`}
-      className="group block h-full col-span-1 sm:col-span-2 lg:col-span-6 lg:row-span-2 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:scale-[1.02]"
+      className="group col-span-1 block h-full transition-all duration-200 ease-out hover:-translate-y-0.5 hover:scale-[1.02] sm:col-span-2 lg:col-span-6 lg:row-span-2"
     >
-      <div className="flex h-full flex-col justify-center rounded-card border border-brand-bamboo/30 bg-brand-bamboo-50 p-8 shadow-card transition-shadow duration-200 group-hover:shadow-md md:p-10">
-        <p className="text-sm font-medium uppercase tracking-[0.18em] text-brand-bamboo-700">
+      <div className="flex h-full flex-col justify-center rounded-card border border-brand-bamboo/30 bg-brand-bamboo-50 p-8 shadow-card transition-shadow duration-200 group-hover:shadow-md md:p-10 lg:p-12">
+        <p className="text-base font-medium uppercase tracking-[0.18em] text-brand-bamboo-700 md:text-lg">
           {stat.platform}
         </p>
-        <div className="mt-4 flex items-baseline gap-2">
-          <span className="font-serif text-5xl font-medium leading-none text-brand-bamboo md:text-6xl">
+        <div className="mt-6 flex items-baseline gap-4">
+          <span className="font-serif text-7xl font-semibold leading-none text-brand-bamboo md:text-8xl lg:text-9xl">
             {stat.rating}
           </span>
-          <span className="text-base text-ink-muted">{stat.label}</span>
+          {/* Label sized one tier below the rating so the glyph (typically ★, which carries
+              more visual weight than digits at the same nominal size) doesn't overpower the
+              number. */}
+          <span className="text-6xl leading-none text-ink-muted md:text-7xl lg:text-8xl">
+            {stat.label}
+          </span>
         </div>
-        <p className="mt-3 text-sm text-ink-muted">{stat.count}</p>
+        <p className="mt-6 text-base text-ink-muted md:text-lg">{stat.count}</p>
       </div>
     </a>
   );
