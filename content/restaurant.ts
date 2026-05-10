@@ -139,13 +139,42 @@ export const restaurant: RestaurantContent = {
         title: "Caribbean Entrées",
         callout: "Each entrée comes with your choice of rice, vegetables, or sweet plantains.",
         items: [
-          { name: "Oxtail Pepperpot", price: "$19", description: "Slow-braised oxtail in rich Caribbean pepperpot stew.", tags: ["signature"] },
+          {
+            name: "Oxtail Pepperpot",
+            price: "$19",
+            description: "Slow-braised oxtail in rich Caribbean pepperpot stew.",
+            tags: ["signature"],
+            image: "/gallery/oxtail-rice-and-peas-bamboo-fire-delray.jpg",
+            imageAlt:
+              "Bamboo Fire Cafe oxtail pepperpot served over rice and peas in Delray Beach",
+          },
           { name: "Chicken Curry", price: "$16", description: "Tender chicken in fragrant island curry.", tags: ["signature"] },
-          { name: "Curry Goat", price: "$19", description: "Slow-cooked goat in island curry spices." },
-          { name: "Jerk Chicken", price: "$16", description: "Bamboo Fire's jerk-spiced grilled chicken.", tags: ["signature", "spicy"] },
+          {
+            name: "Curry Goat",
+            price: "$19",
+            description: "Slow-cooked goat in island curry spices.",
+            image: "/gallery/curry-goat-roti-bamboo-fire-delray-beach.jpg",
+            imageAlt: "Curry goat with roti at Bamboo Fire Cafe in Delray Beach",
+          },
+          {
+            name: "Jerk Chicken",
+            price: "$16",
+            description: "Bamboo Fire's jerk-spiced grilled chicken.",
+            tags: ["signature", "spicy"],
+            image: "/gallery/jerk-chicken-rice-plantains-bamboo-fire-delray.jpg",
+            imageAlt:
+              "Jerk chicken plate with rice and plantains at Bamboo Fire Cafe Delray Beach",
+          },
           { name: "Grilled Chicken", price: "$16", description: "Caribbean-marinated grilled chicken." },
           { name: "Jerk Pork", price: "$15", description: "Jerk-spiced grilled pork.", tags: ["spicy"] },
-          { name: "Fish in Banana Leaf", price: "Market price (~$25)", description: "Fish wrapped in banana leaf, infused with Caribbean flavors." },
+          {
+            name: "Fish in Banana Leaf",
+            price: "Market price (~$25)",
+            description: "Fish wrapped in banana leaf, infused with Caribbean flavors.",
+            image: "/gallery/red-snapper-banana-leaf-caribbean-delray.jpg",
+            imageAlt:
+              "Red snapper baked in banana leaf at Bamboo Fire Cafe, Caribbean restaurant in Delray Beach",
+          },
           { name: "Grilled Conch", price: "$18", description: "Tender grilled conch with island spices." },
           { name: "Cracked Conch", price: "$18", description: "Crispy fried conch, golden and tender." },
           { name: "Basa", price: "$18", description: "Pan-seared basa with Caribbean seasonings." },

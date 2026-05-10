@@ -1,33 +1,8 @@
-import { Leaf, Flame, WheatOff, Star } from "lucide-react";
-import type { MenuItem, RestaurantContent } from "@/types/content";
+import { MenuItemsList } from "@/components/MenuItemsList";
+import type { RestaurantContent } from "@/types/content";
 
 interface Props {
   restaurant: RestaurantContent;
-}
-
-const TAG_META: Record<NonNullable<MenuItem["tags"]>[number], { label: string; icon: React.ComponentType<{ className?: string }> }> = {
-  V: { label: "Vegetarian", icon: Leaf },
-  VG: { label: "Vegan", icon: Leaf },
-  GF: { label: "Gluten-free", icon: WheatOff },
-  DF: { label: "Dairy-free", icon: WheatOff },
-  spicy: { label: "Spicy", icon: Flame },
-  signature: { label: "Signature", icon: Star },
-};
-
-function Tag({ tag }: { tag: NonNullable<MenuItem["tags"]>[number] }) {
-  const meta = TAG_META[tag];
-  if (!meta) return null;
-  const Icon = meta.icon;
-  return (
-    <span
-      title={meta.label}
-      aria-label={meta.label}
-      className="inline-flex items-center gap-1 rounded-full bg-surface-warm px-2 py-0.5 text-[0.7rem] font-medium text-ink-muted"
-    >
-      <Icon className="h-3 w-3" aria-hidden />
-      {meta.label}
-    </span>
-  );
 }
 
 export function Menu({ restaurant }: Props) {
@@ -76,30 +51,10 @@ export function Menu({ restaurant }: Props) {
                 </p>
               )}
 
-              <ul className="grid gap-x-10 gap-y-6 md:grid-cols-2">
-                {section.items.map((item) => (
-                  <li key={item.name} className="flex flex-col gap-1">
-                    <div className="flex items-baseline justify-between gap-3">
-                      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                        <span className="font-medium text-ink">{item.name}</span>
-                        {item.tags?.map((t) => (
-                          <Tag key={t} tag={t} />
-                        ))}
-                      </div>
-                      {item.price && (
-                        <span className="shrink-0 font-medium tabular-nums text-ink-muted">
-                          {item.price}
-                        </span>
-                      )}
-                    </div>
-                    {item.description && (
-                      <p className="text-sm text-ink-muted">
-                        {item.description}
-                      </p>
-                    )}
-                  </li>
-                ))}
-              </ul>
+              {/* Items grid is delegated to a client island so rows with photos can open the
+                  modal. Rows without photos render the original static layout — no behaviour
+                  difference for items that haven't been wired up with a photo yet. */}
+              <MenuItemsList items={section.items} />
             </div>
           ))}
         </div>

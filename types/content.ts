@@ -36,6 +36,14 @@ export interface MenuItem {
   price?: string;
   /** Dietary tags — fill in once owner confirms. */
   tags?: ReadonlyArray<"V" | "VG" | "GF" | "DF" | "spicy" | "signature">;
+  /**
+   * Path under /public for a photo of the dish. When set, the menu row becomes clickable
+   * and opens a photo modal. Reuse gallery filenames where possible so a single image asset
+   * serves multiple surfaces (gallery + menu modal + future Open Graph cards).
+   */
+  image?: string;
+  /** Alt text for the photo. Required content-wise when `image` is set; mirror gallery alts. */
+  imageAlt?: string;
 }
 
 export interface MenuSection {
