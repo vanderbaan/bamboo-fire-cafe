@@ -99,7 +99,7 @@ export const restaurant: RestaurantContent = {
       "Bamboo Fire Cafe is a family kitchen first. Donald and Beverly Jacobs grew up in Berbice, Guyana — between Rosignol and New Amsterdam — where Caribbean and South Asian flavors live on the same plate. They opened Bamboo Fire in Delray Beach to cook the food they were raised on, the way they were raised cooking it.",
       // `{years}` is substituted at render — see lib/tenure.ts.
       "Most evenings, you'll find their daughter Lauren — everyone calls her Smiley — somewhere on the floor. The menu travels: jerk from Jamaica, curries from Guyana, snapper baked in banana leaf, oxtail simmered until it falls off the bone. It's pan-Caribbean by way of one family's life, and it has anchored a corner of Pineapple Grove for {years} years.",
-      "We take reservations. We do takeout. Three sides come with every main — that part isn't negotiable.",
+      "We take reservations. We do takeout. Cooked from scratch — that part isn't negotiable.",
     ],
     pullQuote: {
       text: "A neighborhood institution where the curries taste like home cooking.",
@@ -282,7 +282,7 @@ export const restaurant: RestaurantContent = {
       name: "Marisol",
       stars: 5,
       paraphrase:
-        "Came for the curry goat and stayed for the rum cake. Three sides with every plate is no joke.",
+        "Came for the curry goat and stayed for the rum cake. The kind of place where the kitchen actually cares.",
       source: "Google Reviews",
     },
     {

@@ -45,7 +45,7 @@ export interface MenuSection {
   blurb?: string;
   /** Display indicator like "$$" while real prices are pending. */
   priceRangeIndicator?: "$" | "$$" | "$$$" | "$$$$";
-  /** Special pre-item callout (e.g. "Pick 3 sides included with every main"). */
+  /** Special pre-item callout (e.g. "Each entrée comes with a side of your choice"). */
   callout?: string;
   items: ReadonlyArray<MenuItem>;
 }
