@@ -63,7 +63,11 @@ export function OrderDropdown({ ordering }: Props) {
       if (e.key === "Escape") {
         e.stopPropagation();
         setOpen(false);
-        triggerRef.current?.focus();
+        // preventScroll for consistency with the other focus calls below — there's no
+        // in-flight scroll on close, but a stray scroll-into-view jump from .focus() while
+        // the page is mid-animation elsewhere is exactly the failure mode we're protecting
+        // against.
+        triggerRef.current?.focus({ preventScroll: true });
       }
     };
 
@@ -76,10 +80,18 @@ export function OrderDropdown({ ordering }: Props) {
   }, [open]);
 
   // On open, focus the first menuitem. RAF defers focus until after the menu has rendered.
+  //
+  // CRITICAL: pass { preventScroll: true } here. The trigger handler issues a smooth
+  // window.scrollTo BEFORE this effect fires (RAF chain). If we focus() without preventScroll,
+  // the browser's "scroll target into view" side effect of focus cancels the in-flight smooth
+  // scroll — the page would only move ~20px before stopping. Diagnosed via live testing when
+  // scrolling UP from below the menu section.
   useEffect(() => {
     if (!open) return;
     const raf = requestAnimationFrame(() => {
-      menuRef.current?.querySelector<HTMLElement>("[role='menuitem']")?.focus();
+      menuRef.current
+        ?.querySelector<HTMLElement>("[role='menuitem']")
+        ?.focus({ preventScroll: true });
     });
     return () => cancelAnimationFrame(raf);
   }, [open]);
@@ -97,7 +109,9 @@ export function OrderDropdown({ ordering }: Props) {
       e.key === "ArrowDown"
         ? items[(idx + 1) % items.length]
         : items[(idx - 1 + items.length) % items.length];
-    next?.focus();
+    // preventScroll for consistency — also avoids any unwanted page jump if a menuitem is
+    // ever positioned outside the current viewport.
+    next?.focus({ preventScroll: true });
   };
 
   const close = () => setOpen(false);
