@@ -1,4 +1,5 @@
 import { Logo } from "./Logo";
+import { OrderDropdown } from "./OrderDropdown";
 import { ButtonLink } from "./ui/Button";
 import { brand } from "@/content/brand";
 import type { RestaurantContent } from "@/types/content";
@@ -52,13 +53,19 @@ export function Nav({ restaurant }: Props) {
           </ul>
         </nav>
 
-        <ButtonLink
-          href={`tel:${restaurant.contact.phone}`}
-          variant="primary"
-          size="sm"
-        >
-          Reserve
-        </ButtonLink>
+        {/* Order → Reserve reading order: ordering is the more common visit intent than booking,
+            so the Order popover sits to the left and gets the brand-fire primary treatment.
+            Reserve is demoted to outline so we don't ship two competing red CTAs in the bar. */}
+        <div className="flex items-center gap-2">
+          <OrderDropdown ordering={restaurant.ordering} />
+          <ButtonLink
+            href={`tel:${restaurant.contact.phone}`}
+            variant="outline"
+            size="sm"
+          >
+            Reserve
+          </ButtonLink>
+        </div>
       </div>
     </header>
   );

@@ -1,16 +1,12 @@
 import { Logo } from "@/components/Logo";
 import { brand } from "@/content/brand";
 import { hoursSummary } from "@/lib/hours";
+import { displayPhone } from "@/lib/phone";
 import { Facebook, Instagram } from "lucide-react";
 import type { RestaurantContent } from "@/types/content";
 
 interface Props {
   restaurant: RestaurantContent;
-}
-
-function displayPhone(intl: string) {
-  const m = intl.match(/^\+1?(\d{3})(\d{3})(\d{4})$/);
-  return m ? `(${m[1]}) ${m[2]}-${m[3]}` : intl;
 }
 
 export function Footer({ restaurant }: Props) {

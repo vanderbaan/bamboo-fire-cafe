@@ -2,6 +2,7 @@ import { MapPin, Phone, Mail, Car, Calendar } from "lucide-react";
 import { ButtonLink } from "@/components/ui/Button";
 import { HoursDisplay } from "@/components/HoursDisplay";
 import { OpenNowBadge } from "@/components/OpenNowBadge";
+import { displayPhone } from "@/lib/phone";
 import type { RestaurantContent } from "@/types/content";
 
 interface Props {
@@ -23,11 +24,6 @@ function buildDirectionsHref(r: RestaurantContent) {
   return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
     `${r.address.street}, ${r.address.city}, ${r.address.state} ${r.address.postalCode}`
   )}`;
-}
-
-function displayPhone(intl: string) {
-  const m = intl.match(/^\+1?(\d{3})(\d{3})(\d{4})$/);
-  return m ? `(${m[1]}) ${m[2]}-${m[3]}` : intl;
 }
 
 export function Location({ restaurant }: Props) {

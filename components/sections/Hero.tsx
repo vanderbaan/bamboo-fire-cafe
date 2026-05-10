@@ -2,17 +2,12 @@ import Image from "next/image";
 import { ButtonLink } from "@/components/ui/Button";
 import { OpenNowBadge } from "@/components/OpenNowBadge";
 import { MapPin, Phone } from "lucide-react";
+import { displayPhone } from "@/lib/phone";
 import { fillTenure, yearsSince } from "@/lib/tenure";
 import type { RestaurantContent } from "@/types/content";
 
 interface Props {
   restaurant: RestaurantContent;
-}
-
-function displayPhone(intl: string) {
-  // +15617490973 → (561) 749-0973
-  const m = intl.match(/^\+1?(\d{3})(\d{3})(\d{4})$/);
-  return m ? `(${m[1]}) ${m[2]}-${m[3]}` : intl;
 }
 
 /** Pretty-print a delivery provider id for the secondary CTA label. */
