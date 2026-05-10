@@ -107,19 +107,40 @@ export function OrderDropdown({ ordering }: Props) {
    * between while the popover reveals their pickup/delivery options. We skip the scroll
    * on close — auto-scrolling on dismiss would feel hostile.
    *
-   * scrollIntoView is a no-op when the section is already in view, so a click while sitting
-   * at the menu just opens the popover (no scroll, no jump).
+   * Two implementation details that earned their way in after a bug report:
    *
-   * Note: html `scroll-padding-top` (set in app/globals.css) keeps the section's top edge
-   * from sliding under the sticky nav header.
+   * 1. State flip happens FIRST, then the scroll runs inside requestAnimationFrame. The
+   *    earlier "scroll then setOpen" version raced — when the user was scrolled BELOW the
+   *    menu (Press / FAQ / Reviews), Chrome would sometimes drop the upward smooth scroll
+   *    if the popover's mount-time layout shift kicked in mid-animation. Deferring the
+   *    scroll past the React commit dodges that.
+   *
+   * 2. We compute the target y manually and call window.scrollTo, instead of relying on
+   *    scrollIntoView({block:"start"}) + html scroll-padding-top. scroll-padding-top is
+   *    correct in spec, but its interaction with scrollIntoView varies across browsers,
+   *    and the explicit math gives identical behavior on every engine.
+   *
+   * scroll-padding-top in app/globals.css still earns its keep for the Hero "View Menu"
+   * anchor link (which uses the browser's native anchor scroll, where scroll-padding works
+   * reliably). It's just no longer load-bearing here.
+   *
+   * Reduced-motion users: window.scrollTo({behavior:"smooth"}) honors prefers-reduced-motion
+   * automatically — modern browsers downgrade smooth → auto when the OS preference is set.
    */
   const handleTriggerClick = () => {
-    if (!open) {
-      document
-        .getElementById("menu")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    setOpen((v) => !v);
+    const willOpen = !open;
+    setOpen(willOpen);
+    if (!willOpen) return;
+
+    requestAnimationFrame(() => {
+      const menuEl = document.getElementById("menu");
+      if (!menuEl) return;
+      // Nav heights mirror Nav.tsx: h-20 (80px) mobile, h-24 (96px) at md+.
+      const navHeight = window.innerWidth >= 768 ? 96 : 80;
+      const targetY =
+        menuEl.getBoundingClientRect().top + window.scrollY - navHeight;
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+    });
   };
 
   const deliveryLabel = ordering.delivery
