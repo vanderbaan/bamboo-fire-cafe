@@ -41,6 +41,18 @@ export function restaurantJsonLd(r: RestaurantContent, siteUrl: string) {
     openingHours: schemaOpeningHours(r.hours),
     hasMenu: `${siteUrl}#menu`,
     sameAs,
+    // aggregateRating drives the star-rating display in Google search snippets. Only emitted
+    // when content/ provides values — early-stage merchants without enough reviews skip it
+    // and don't risk an empty/wrong rating attached to their listing.
+    ...(r.aggregateRating && {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: r.aggregateRating.ratingValue,
+        reviewCount: r.aggregateRating.reviewCount,
+        bestRating: r.aggregateRating.bestRating,
+        worstRating: r.aggregateRating.worstRating,
+      },
+    }),
   };
 }
 

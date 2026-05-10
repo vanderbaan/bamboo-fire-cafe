@@ -69,6 +69,40 @@ export interface ReviewItem {
 }
 
 /**
+ * Aggregate stat card for a single review platform. Drives the Reviews-section "stats band":
+ *   • `rating` is a display string ("4.8" or "96") — kept as string so platforms with
+ *     non-5-scale metrics (Facebook's recommend-percent) render naturally.
+ *   • `label` is the unit token rendered next to the rating ("★", "% recommend").
+ *   • `count` is a display string ("307 reviews", "140+ ratings") rather than a number, so
+ *     approximate counts can be expressed honestly.
+ *   • `featured` flips the card to enhanced visual treatment (larger rating, tinted card,
+ *     spans extra grid cells on desktop). Exactly one card per merchant should be featured;
+ *     the component doesn't enforce this but the layout assumes it.
+ */
+export interface ReviewStat {
+  platform: string;
+  rating: string;
+  label: string;
+  count: string;
+  url: string;
+  featured?: boolean;
+}
+
+/**
+ * Schema.org AggregateRating for the Restaurant JSON-LD. Merchant-specific numbers live in
+ * content (here, not in lib/schema.ts) so the schema function stays template-clean and any
+ * future merchant overrides their own values.
+ */
+export interface AggregateRating {
+  /** Average across rated platforms — display string per Schema.org convention. */
+  ratingValue: string;
+  /** Total review count across all platforms. */
+  reviewCount: number;
+  bestRating: "5";
+  worstRating: "1";
+}
+
+/**
  * Ordering channels available to the merchant. `pickup` is required (every restaurant accepts
  * a phone call); `delivery` is optional so merchants who haven't onboarded to a delivery
  * marketplace simply don't render the secondary CTA. Future modes (Uber Direct white-label,
@@ -189,6 +223,11 @@ export interface RestaurantContent {
    */
   faqs: ReadonlyArray<Faq>;
   reviews: ReadonlyArray<ReviewItem>;
+  /** Aggregate stat cards rendered above the prose review snippets. Optional — early-stage
+   *  merchants without enough reviews simply skip the stats band. */
+  reviewStats?: ReadonlyArray<ReviewStat>;
+  /** Schema.org AggregateRating for rich snippets. Optional alongside `reviewStats`. */
+  aggregateRating?: AggregateRating;
 
   social: SocialLinks;
 

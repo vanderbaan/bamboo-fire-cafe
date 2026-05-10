@@ -270,6 +270,58 @@ export const restaurant: RestaurantContent = {
     },
   ],
 
+  // Aggregate stats per platform — drives the "stats band" above the prose review snippets.
+  // Refresh quarterly. Featured platform (currently Google) gets enhanced visual treatment
+  // and should be the platform that contributes most to local-search visibility.
+  reviewStats: [
+    {
+      platform: "Google",
+      rating: "4.8",
+      label: "★",
+      count: "307 reviews",
+      url: "https://www.google.com/search?q=Bamboo+Fire+Cafe+Delray+Beach",
+      featured: true,
+    },
+    {
+      platform: "Yelp",
+      rating: "4.5",
+      label: "★",
+      count: "370 reviews",
+      url: "https://www.yelp.com/biz/bamboo-fire-cafe-delray-beach",
+    },
+    {
+      platform: "Tripadvisor",
+      rating: "4.5",
+      label: "★",
+      count: "114 reviews",
+      url: "https://www.tripadvisor.com/Restaurant_Review-g34179-d1604319-Reviews-Bamboo_Fire_Cafe-Delray_Beach_Florida.html",
+    },
+    {
+      platform: "Facebook",
+      rating: "96",
+      label: "% recommend",
+      count: "287 reviews",
+      url: "https://www.facebook.com/BambooFireDelray",
+    },
+    {
+      platform: "Uber Eats",
+      rating: "4.4",
+      label: "★",
+      count: "140+ ratings",
+      url: "https://www.ubereats.com/store/bamboo-fire-cafe-delray-beach/vfRrP-qkUZa0Kjn9o4lsQg",
+    },
+  ],
+
+  // Sum of Google (307) + Yelp (370) + Tripadvisor (114) + Facebook (287) + Uber Eats (140)
+  // = 1,218. Weighted average across the 4 star-rated platforms (Facebook's 'recommend %'
+  // excluded from rating calculation but included in reviewCount): 4.58, rounded to 4.6.
+  aggregateRating: {
+    ratingValue: "4.6",
+    reviewCount: 1218,
+    bestRating: "5",
+    worstRating: "1",
+  },
+
   reviews: [
     {
       name: "Daniel",
