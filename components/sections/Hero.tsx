@@ -15,6 +15,14 @@ function displayPhone(intl: string) {
   return m ? `(${m[1]}) ${m[2]}-${m[3]}` : intl;
 }
 
+/** Pretty-print a delivery provider id for the secondary CTA label. */
+const DELIVERY_LABEL: Record<string, string> = {
+  ubereats: "Uber Eats",
+  doordash: "DoorDash",
+  grubhub: "Grubhub",
+  uberdirect: "delivery",
+};
+
 export function Hero({ restaurant }: Props) {
   // Both the subhead and the info row derive from foundedYear — keeping the two phrasings
   // pinned to the same number so they can't drift apart in copy edits.
@@ -85,28 +93,56 @@ export function Hero({ restaurant }: Props) {
             )}
           </ul>
 
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <ButtonLink
-              href={`tel:${restaurant.contact.phone}`}
-              variant="primary"
-              size="lg"
-            >
-              Reserve a Table
-            </ButtonLink>
-            <ButtonLink
-              href="#menu"
-              variant="outline"
-              size="lg"
-              className="border-surface/40 bg-transparent text-surface hover:border-surface hover:bg-surface/10"
-            >
-              View Menu
-            </ButtonLink>
-            <span className="ml-1">
-              <OpenNowBadge
-                hours={restaurant.hours}
-                timezone={restaurant.timezone}
-              />
-            </span>
+          {/*
+            Two-tier order CTA.
+              • Primary: brand-fire phone-pickup button — highest margin for the merchant.
+              • Secondary: muted text-link to the delivery marketplace storefront. Renders only
+                when ordering.delivery.url is set, so merchants who aren't on a delivery
+                platform get a single CTA instead of an awkward dangling link.
+            "View Menu" stays as a tertiary outline button on a separate row so it doesn't
+            compete with the primary action's visual weight, and on mobile each row stacks
+            cleanly with the primary order button on top.
+          */}
+          <div className="mt-8 flex flex-col items-start gap-5">
+            <div className="flex flex-col items-start gap-2.5">
+              <ButtonLink
+                href={`tel:${restaurant.ordering.pickup.phoneNumber}`}
+                variant="primary"
+                size="lg"
+              >
+                Call to Order Pickup
+              </ButtonLink>
+              {restaurant.ordering.delivery?.url && (
+                <a
+                  href={restaurant.ordering.delivery.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-surface/80 underline-offset-4 hover:text-surface hover:underline"
+                >
+                  Or order delivery via{" "}
+                  {DELIVERY_LABEL[restaurant.ordering.delivery.provider] ??
+                    "delivery"}{" "}
+                  →
+                </a>
+              )}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <ButtonLink
+                href="#menu"
+                variant="outline"
+                size="lg"
+                className="border-surface/40 bg-transparent text-surface hover:border-surface hover:bg-surface/10"
+              >
+                View Menu
+              </ButtonLink>
+              <span className="ml-1">
+                <OpenNowBadge
+                  hours={restaurant.hours}
+                  timezone={restaurant.timezone}
+                />
+              </span>
+            </div>
           </div>
         </div>
       </div>

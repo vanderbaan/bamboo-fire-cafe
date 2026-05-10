@@ -50,8 +50,9 @@ export function Menu({ restaurant }: Props) {
             Caribbean &amp; world cuisine, by way of one family.
           </h2>
           <p className="mt-4 text-ink-muted">
-            Three sides come with every main. Call us for tonight's pricing while we
-            finalize the menu online.
+            Each entrée comes with your choice of rice, vegetables, or sweet
+            plantains. Prices shown reflect Uber Eats delivery — call to confirm
+            dine-in pricing.
           </p>
         </header>
 
@@ -79,11 +80,18 @@ export function Menu({ restaurant }: Props) {
               <ul className="grid gap-x-10 gap-y-6 md:grid-cols-2">
                 {section.items.map((item) => (
                   <li key={item.name} className="flex flex-col gap-1">
-                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <span className="font-medium text-ink">{item.name}</span>
-                      {item.tags?.map((t) => (
-                        <Tag key={t} tag={t} />
-                      ))}
+                    <div className="flex items-baseline justify-between gap-3">
+                      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span className="font-medium text-ink">{item.name}</span>
+                        {item.tags?.map((t) => (
+                          <Tag key={t} tag={t} />
+                        ))}
+                      </div>
+                      {item.price && (
+                        <span className="shrink-0 font-medium tabular-nums text-ink-muted">
+                          {item.price}
+                        </span>
+                      )}
                     </div>
                     {item.description && (
                       <p className="text-sm text-ink-muted">

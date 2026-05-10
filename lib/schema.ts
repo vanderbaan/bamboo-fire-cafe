@@ -1,4 +1,4 @@
-import type { RestaurantContent } from "@/types/content";
+import type { Faq, RestaurantContent } from "@/types/content";
 import { schemaOpeningHours } from "./hours";
 
 /** Build a Schema.org Restaurant + LocalBusiness JSON-LD object for the home page. */
@@ -41,5 +41,28 @@ export function restaurantJsonLd(r: RestaurantContent, siteUrl: string) {
     openingHours: schemaOpeningHours(r.hours),
     hasMenu: `${siteUrl}#menu`,
     sameAs,
+  };
+}
+
+/**
+ * Build a Schema.org FAQPage object from the merchant's FAQ array. Emitted alongside the
+ * Restaurant + LocalBusiness JSON-LD on the home page (separate <script> tag) so search
+ * engines can attach FAQ rich snippets without colliding with the LocalBusiness entity.
+ *
+ * Same array drives the visible accordion in components/sections/FAQ.tsx, which keeps the
+ * structured data and the rendered text in lockstep — Google penalizes mismatch.
+ */
+export function buildFAQSchema(faqs: ReadonlyArray<Faq>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: a,
+      },
+    })),
   };
 }

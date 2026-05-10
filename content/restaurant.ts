@@ -43,6 +43,23 @@ export const restaurant: RestaurantContent = {
     email: "info@bamboofiredelray.com", // CONFIRM vs. legacy Bamboofiregrill@gmail.com
   },
 
+  // Channel split: phone-pickup is the primary order CTA (highest margin for the merchant);
+  // UberEats is the secondary path so customers who default to delivery-app behavior still
+  // have a clear funnel. Future merchants who aren't on UberEats omit `delivery` entirely
+  // and the secondary CTA stops rendering. Future Lōcal milestone is to swap UberEats for
+  // Uber Direct (white-label) so the order goes through the merchant's own checkout — same
+  // ~$6 drop fee, but the data + customer relationship stay with the merchant.
+  ordering: {
+    pickup: {
+      primary: "phone",
+      phoneNumber: "+15617490973",
+    },
+    delivery: {
+      provider: "ubereats",
+      url: "https://www.ubereats.com/store/bamboo-fire-cafe-delray-beach/vfRrP-qkUZa0Kjn9o4lsQg",
+    },
+  },
+
   address: {
     street: "149 NE 4th Ave",
     city: "Delray Beach",
@@ -94,82 +111,51 @@ export const restaurant: RestaurantContent = {
   },
 
   menu: {
+    // Source: Uber Eats (May 2026). Prices to be confirmed by Beverly for dine-in. UberEats also
+    // has Vegetarian, Mac & Cheese, Extras, and Dessert sections but specific items in those
+    // aren't listed publicly.
     sections: [
       {
-        title: "Appetizers",
-        priceRangeIndicator: "$",
+        title: "Starters",
         items: [
-          { name: "Conch Salad", description: "Bright Bahamian-style ceviche with citrus and chiles." },
-          { name: "Garbanzo Fritos", description: "Crisp chickpea fritters with house dipping sauce." },
-          { name: "Dhal", description: "Slow-cooked Indo-Guyanese lentil soup.", tags: ["V"] },
-          { name: "Tostones", description: "Twice-fried green plantains, salted hot.", tags: ["V"] },
-          { name: "Plantain Fries", description: "Sweet plantains cut thin, fried golden.", tags: ["V"] },
-          { name: "Jerk Meatballs", description: "House-ground beef in jerk-spiced gravy.", tags: ["spicy"] },
-          { name: "Conch Fritters", description: "Florida conch in a crackly fried shell." },
+          { name: "Jerk Meatballs", price: "$10", description: "Spicy meatballs infused with jerk seasoning.", tags: ["spicy"] },
+          { name: "Tostones with Garlic Sauce", price: "$8", description: "Crispy fried green plantains served with rich garlic sauce." },
+          { name: "Garbanzo Fritos", price: "$7", description: "Crunchy fritos filled with garbanzo beans.", tags: ["V"] },
+          { name: "Conch Ceviche", price: "$16", description: "Fresh conch marinated in a zesty blend of flavors." },
+          { name: "Conch Fritters", price: "$11", description: "Tender conch in a crispy fritter." },
+          { name: "Grilled Eggplant Dip", price: "$9", description: "Smoky eggplant blended with creamy goodness.", tags: ["V"] },
+          { name: "Grilled Conch", price: "$16", description: "Tender conch, expertly grilled." },
+          { name: "Plantain Fries", price: "$8", description: "Thinly sliced plantains, crispy outside and soft within.", tags: ["V"] },
+          { name: "Dhal (Yellow Lentil Soup)", price: "$9", description: "Traditional yellow lentil soup.", tags: ["V"] },
         ],
       },
       {
-        title: "Greatest Hits",
-        blurb:
-          "The dishes guests come back for. Each served with three sides — pick from the list below.",
-        priceRangeIndicator: "$$",
-        callout: "Three sides included with every main.",
+        title: "Salads",
         items: [
-          { name: "Oxtail", description: "Braised low and slow until tender.", tags: ["signature"] },
-          { name: "Curry Chicken", description: "Guyanese-style curry, deep and aromatic." },
-          { name: "Curry Goat", description: "Bone-in goat in classic curry." },
-          { name: "Jerk Chicken", description: "Marinated overnight, grilled hard.", tags: ["spicy", "signature"] },
-          { name: "Jerk Pork", description: "Slow-jerked pork shoulder.", tags: ["spicy"] },
-          { name: "Jerk Ribs", description: "Sticky, smoky, full rack.", tags: ["spicy"] },
-          { name: "Jerk Platter Combo", description: "Jerk chicken, pork and ribs on one plate.", tags: ["spicy", "signature"] },
-          { name: "Lamb Chops", description: "Grilled with Caribbean rub." },
+          { name: "House Salad", price: "$8", description: "Fresh mixed greens.", tags: ["V"] },
         ],
       },
       {
-        title: "Seafood",
-        priceRangeIndicator: "$$",
+        title: "Caribbean Entrées",
+        callout: "Each entrée comes with your choice of rice, vegetables, or sweet plantains.",
         items: [
-          { name: "Coconut Shrimp", description: "Crisp coconut crust, sweet chili dip." },
-          { name: "Curried Shrimp", description: "Shrimp in Guyanese curry." },
-          { name: "Seafood Creole", description: "Fish, shrimp and crabcake in creole sauce." },
-          { name: "Red Snapper in Banana Leaf", description: "Whole snapper baked with herbs and lime.", tags: ["signature"] },
-        ],
-      },
-      {
-        title: "Vegetarian",
-        priceRangeIndicator: "$",
-        items: [
-          { name: "Jerk or Curried Vegetables", description: "Cauliflower-forward vegetable plate, your spice.", tags: ["V"] },
-          { name: "Coconut Tofu", description: "Coconut-crusted tofu, sweet chili.", tags: ["V"] },
-        ],
-      },
-      {
-        title: "Sides",
-        blurb: "Pick three with any main, or order à la carte.",
-        items: [
-          { name: "Okra Fried Rice", tags: ["V"] },
-          { name: "Peas & Rice", tags: ["V"] },
-          { name: "Roti", tags: ["V"] },
-          { name: "Sweet Plantains", tags: ["V"] },
-          { name: "Cabbage", tags: ["V"] },
-          { name: "Mac & Cheese", tags: ["V"] },
-        ],
-      },
-      {
-        title: "Dessert & Drinks",
-        items: [
-          { name: "Rum Cake", description: "House signature.", tags: ["signature"] },
-          { name: "Calypso Lemonade", description: "Our house lemonade.", tags: ["signature"] },
-          { name: "Banks Beer", description: "Guyanese lager." },
-          { name: "Caribbean Sodas", description: "Ting and Ginger Beer when in stock." },
-          { name: "Wine", description: "Short, considered list — ask your server." },
+          { name: "Oxtail Pepperpot", price: "$19", description: "Slow-braised oxtail in rich Caribbean pepperpot stew.", tags: ["signature"] },
+          { name: "Chicken Curry", price: "$16", description: "Tender chicken in fragrant island curry.", tags: ["signature"] },
+          { name: "Curry Goat", price: "$19", description: "Slow-cooked goat in island curry spices." },
+          { name: "Jerk Chicken", price: "$16", description: "Bamboo Fire's jerk-spiced grilled chicken.", tags: ["signature", "spicy"] },
+          { name: "Grilled Chicken", price: "$16", description: "Caribbean-marinated grilled chicken." },
+          { name: "Jerk Pork", price: "$15", description: "Jerk-spiced grilled pork.", tags: ["spicy"] },
+          { name: "Fish in Banana Leaf", price: "Market price (~$25)", description: "Fish wrapped in banana leaf, infused with Caribbean flavors." },
+          { name: "Grilled Conch", price: "$18", description: "Tender grilled conch with island spices." },
+          { name: "Cracked Conch", price: "$18", description: "Crispy fried conch, golden and tender." },
+          { name: "Basa", price: "$18", description: "Pan-seared basa with Caribbean seasonings." },
         ],
       },
     ],
     footnotes: [
-      "Three sides come with every main. Sides can also be ordered à la carte.",
+      "Prices reflect Uber Eats delivery pricing as of May 2026; dine-in pricing may differ. Call us to confirm.",
       "Ask us about dietary adjustments — vegetarian, gluten-free and dairy-free swaps are usually doable with notice.",
-      "Prices subject to change. Call us for tonight's pricing while we finalize the menu online.",
+      "Vegetarian, mac & cheese, extras, and dessert sections also available — ask us or check Uber Eats for what's on offer tonight.",
     ],
     cateringTeaser:
       "Catering menu coming soon. For private events, family-style trays and large orders, email us and we'll quote you fast.",
@@ -214,6 +200,49 @@ export const restaurant: RestaurantContent = {
       alt: "Bamboo Fire Cafe exterior on NE 4th Avenue in Delray Beach",
       width: 1200,
       height: 800,
+    },
+  ],
+
+  // Tuned for long-tail Google queries ("is bamboo fire cafe open monday", "vegetarian
+  // options", etc.) and for AI-search citation. Keep answers self-contained — they get
+  // extracted out of context by ChatGPT/Perplexity/Claude, so don't reference "above"/"below".
+  // Same array drives the visible accordion AND the FAQPage JSON-LD in lib/schema.ts.
+  faqs: [
+    {
+      q: "Where is Bamboo Fire Cafe located?",
+      a: "Bamboo Fire Cafe is at 149 NE 4th Avenue in Delray Beach, Florida, just steps from the Pineapple Grove Arts District.",
+    },
+    {
+      q: "What kind of food does Bamboo Fire Cafe serve?",
+      a: "Bamboo Fire Cafe serves Caribbean and World Cuisine with deep Guyanese roots. Signature dishes include oxtail pepperpot, jerk chicken, curry goat, and conch ceviche. The kitchen also offers vegetarian and pescatarian options.",
+    },
+    {
+      q: "Do you take reservations?",
+      a: "Yes. Call (561) 749-0973 to reserve a table, especially recommended for weekend evenings.",
+    },
+    {
+      q: "What days are you open?",
+      a: "Bamboo Fire Cafe is open Wednesday through Sunday. Closed Mondays and Tuesdays. See the location section for current hours.",
+    },
+    {
+      q: "Do you offer vegetarian options?",
+      a: "Yes. Vegetarian options include the House Salad, Tostones with Garlic Sauce, Garbanzo Fritos, Grilled Eggplant Dip, Plantain Fries, and Dhal (Yellow Lentil Soup). The kitchen can also adapt many entrees on request.",
+    },
+    {
+      q: "Do you deliver?",
+      a: "Yes. Delivery is available through Uber Eats. For pickup, call (561) 749-0973 directly — pickup orders bypass delivery fees and reach the kitchen with full menu access.",
+    },
+    {
+      q: "Do you cater events?",
+      a: "Yes. Bamboo Fire Cafe caters private events of all sizes. Call (561) 749-0973 to discuss menus and pricing.",
+    },
+    {
+      q: "How long has Bamboo Fire Cafe been in Delray Beach?",
+      a: "Bamboo Fire Cafe has served Delray Beach since 2009 — over 17 years. Owners Donald and Beverly Jacobs are originally from Berbice, Guyana, and the menu reflects their Guyanese heritage alongside broader Caribbean and world influences.",
+    },
+    {
+      q: "How spicy are the jerk dishes?",
+      a: "Bamboo Fire Cafe's jerk dishes are traditionally spiced — flavorful with moderate heat. Spice level can be adjusted on request, milder or hotter.",
     },
   ],
 

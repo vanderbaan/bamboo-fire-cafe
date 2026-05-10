@@ -29,6 +29,11 @@ export interface MenuItem {
   name: string;
   /** Optional short blurb (≤120 chars). Skip if the dish name speaks for itself. */
   description?: string;
+  /**
+   * Display string — flexible to accommodate "$10", "Market price", "Market price (typically $25)".
+   * Optional so legacy sections that only show a price-range indicator still work.
+   */
+  price?: string;
   /** Dietary tags — fill in once owner confirms. */
   tags?: ReadonlyArray<"V" | "VG" | "GF" | "DF" | "spicy" | "signature">;
 }
@@ -61,6 +66,36 @@ export interface ReviewItem {
   /** Paraphrased praise — never quote verbatim from external review platforms. */
   paraphrase: string;
   source: string; // e.g. "Google Reviews", "Yelp"
+}
+
+/**
+ * Ordering channels available to the merchant. `pickup` is required (every restaurant accepts
+ * a phone call); `delivery` is optional so merchants who haven't onboarded to a delivery
+ * marketplace simply don't render the secondary CTA. Future modes (Uber Direct white-label,
+ * native ordering) extend the union.
+ */
+export interface Ordering {
+  pickup: {
+    primary: "phone";
+    /** E.164 format for tel: links and Schema.org. */
+    phoneNumber: string;
+  };
+  delivery?: {
+    provider: "ubereats" | "doordash" | "grubhub" | "uberdirect";
+    /** Public storefront URL on the delivery marketplace. */
+    url: string;
+  };
+}
+
+/**
+ * FAQ entry. Short field names (`q`/`a`) keep the per-merchant content file readable when
+ * scanning long lists. Plain strings only for v1 — if a merchant ever needs links or formatting
+ * inside an answer, widen `a` to `string | { html: string }` and parse selectively in the
+ * component (avoid letting raw HTML through merchant content by default).
+ */
+export interface Faq {
+  q: string;
+  a: string;
 }
 
 export interface SocialLinks {
@@ -99,6 +134,9 @@ export interface RestaurantContent {
     /** Customer-facing email. */
     email: string;
   };
+
+  /** Ordering channels — see Ordering interface. Pickup is required; delivery is optional. */
+  ordering: Ordering;
 
   address: {
     street: string;
@@ -144,6 +182,12 @@ export interface RestaurantContent {
   gallery: ReadonlyArray<GalleryImage>;
 
   press: ReadonlyArray<PressItem>;
+  /**
+   * Frequently asked questions. Drives the visible accordion AND the FAQPage JSON-LD —
+   * keep answers concise (1–3 sentences), factual, and standalone (don't reference "above" or
+   * "below" since they may surface in AI search/voice answers without surrounding context).
+   */
+  faqs: ReadonlyArray<Faq>;
   reviews: ReadonlyArray<ReviewItem>;
 
   social: SocialLinks;
