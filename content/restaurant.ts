@@ -153,9 +153,8 @@ export const restaurant: RestaurantContent = {
       },
     ],
     footnotes: [
-      "Prices reflect Uber Eats delivery pricing as of May 2026; dine-in pricing may differ. Call us to confirm.",
       "Ask us about dietary adjustments — vegetarian, gluten-free and dairy-free swaps are usually doable with notice.",
-      "Vegetarian, mac & cheese, extras, and dessert sections also available — ask us or check Uber Eats for what's on offer tonight.",
+      "Vegetarian, mac & cheese, extras, and dessert sections also available — ask us about tonight's options.",
     ],
     cateringTeaser:
       "Catering menu coming soon. For private events, family-style trays and large orders, email us and we'll quote you fast.",

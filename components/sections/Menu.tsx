@@ -51,8 +51,7 @@ export function Menu({ restaurant }: Props) {
           </h2>
           <p className="mt-4 text-ink-muted">
             Each entrée comes with your choice of rice, vegetables, or sweet
-            plantains. Prices shown reflect Uber Eats delivery — call to confirm
-            dine-in pricing.
+            plantains.
           </p>
         </header>
 
