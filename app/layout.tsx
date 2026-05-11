@@ -48,6 +48,24 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
+  // Icon coverage:
+  //   • app/icon.svg is auto-detected by Next.js — emits <link rel="icon" type="image/svg+xml">
+  //     for modern browsers (preferred when supported because it scales without resampling).
+  //   • /favicon.ico is found at the root by browser convention (no link tag strictly needed,
+  //     but declared here so it shows up in the page-source audit).
+  //   • Raster PNGs cover Android home-screen / PWA / iOS-add-to-home cases where the SVG
+  //     isn't honored.
+  // Generated from app/icon.svg via ImageMagick — regenerate (and bump favicon hash if a
+  // CDN is caching) whenever the SVG changes.
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: { url: "/apple-touch-icon.png", sizes: "180x180" },
+  },
+  manifest: undefined, // PWA manifest comes online in Phase 4.5; icon-512 is ready when it does
   category: "Restaurant",
 };
 

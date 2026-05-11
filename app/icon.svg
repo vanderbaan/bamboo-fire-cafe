@@ -1,5 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="#fafaf7"/>
-  <text x="50%" y="58%" text-anchor="middle" font-family="Georgia, serif" font-size="34" font-weight="700" fill="#69933a">B</text>
-  <circle cx="46" cy="48" r="6" fill="#d32e1b"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="512" height="512">
+  <!--
+    Bamboo Fire favicon — designed for legibility down to 16x16. The watercolor wordmark
+    logo doesn't read at small sizes, so this glyph mark stands in:
+      • bamboo-green circle (#69933a) — fill, full bleed
+      • cream-white serif "B"  — strong center anchor
+      • chili-red dot (#d32e1b) in the upper right — the chili-pepper element of the master
+        brand reduced to a single shape that survives at favicon scale
+    This file is auto-detected by Next.js (app/icon.svg). PNG and ICO companions live in
+    /public and are wired explicitly via metadata.icons in app/layout.tsx.
+  -->
+  <circle cx="32" cy="32" r="32" fill="#69933a"/>
+  <text x="32" y="46" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="40" font-weight="700" fill="#fafaf7">B</text>
+  <circle cx="50" cy="14" r="6" fill="#d32e1b"/>
 </svg>
