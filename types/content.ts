@@ -209,8 +209,21 @@ export interface RestaurantContent {
     paragraphs: ReadonlyArray<string>;
     /** Optional short pull-quote (<=15 words) attributed to a press source. */
     pullQuote?: { text: string; attribution: string; sourceUrl: string };
-    /** Photo of the family / interior — public path. Optional. */
-    photo?: { src: string; alt: string; width: number; height: number };
+    /**
+     * Photo of the family / interior — public path. Optional.
+     *
+     * Story.tsx renders this image when:
+     *   1. `storyImage` is set in content, AND
+     *   2. the file at `src` actually exists in /public (checked at build time via fs).
+     *
+     * If either condition fails, the "Family photo coming soon" placeholder shows. This
+     * lets us commit the SEO filename ahead of time so search engines have a stable URL,
+     * and have the photo go live the moment Beverly drops the file in /public/story/.
+     *
+     * Aspect ratio is controlled by Story.tsx's container (currently 4/5 portrait); no
+     * width/height needed on the field because the component uses next/image fill mode.
+     */
+    storyImage?: { src: string; alt: string };
   };
 
   menu: {

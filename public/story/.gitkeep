@@ -1,0 +1,16 @@
+This directory holds Story-section photography.
+
+Drop the family photo here as:
+  jacobs-family-bamboo-fire-cafe-delray-beach.jpg
+
+Recommended specs:
+  - 4:5 aspect ratio (portrait)
+  - At least 1200x1500 px
+  - JPG, ~80% quality, color-corrected
+  - File size under 400 KB (use a tool like squoosh.app)
+
+Story.tsx checks for the file at build time. As soon as the file is committed and the
+site redeploys, the placeholder is replaced with the photo automatically.
+
+Filename convention (see content/restaurant.ts header for the full rule):
+  [brand]-[subject]-[location].jpg

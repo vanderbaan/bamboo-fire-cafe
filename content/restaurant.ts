@@ -107,7 +107,13 @@ export const restaurant: RestaurantContent = {
       sourceUrl:
         "https://bocamag.com/restaurant-review-bamboo-fire-cafe/",
     },
-    // CONFIRM: replace placeholder when Beverly provides a family/interior photo.
+    // SEO filename committed ahead of the actual file landing in /public/story/. Story.tsx
+    // checks for the file at build time and falls back to "Family photo coming soon" when
+    // it isn't present, so search engines get a stable URL the day Beverly drops the photo.
+    storyImage: {
+      src: "/story/jacobs-family-bamboo-fire-cafe-delray-beach.jpg",
+      alt: "Donald, Beverly, and Lauren Jacobs at Bamboo Fire Cafe in Delray Beach",
+    },
   },
 
   menu: {

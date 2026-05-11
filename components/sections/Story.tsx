@@ -1,9 +1,25 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import Image from "next/image";
 import { fillTenure } from "@/lib/tenure";
 import type { RestaurantContent } from "@/types/content";
 
 interface Props {
   restaurant: RestaurantContent;
+}
+
+/**
+ * Server-side check whether a /public-relative asset exists on disk. Lets us commit the
+ * canonical SEO filename in content/ before the actual photo lands — Story.tsx will keep
+ * showing the placeholder until Beverly drops the file in /public/story/, then the next
+ * deploy renders the photo automatically with no content change required.
+ *
+ * fs.existsSync is available because Story is a server component. The check runs at build
+ * time for static pages; on Vercel that means a redeploy is required to pick up a newly
+ * added asset, which happens automatically on push to main.
+ */
+function publicAssetExists(publicSrc: string): boolean {
+  return existsSync(join(process.cwd(), "public", publicSrc.replace(/^\//, "")));
 }
 
 export function Story({ restaurant }: Props) {
@@ -13,6 +29,12 @@ export function Story({ restaurant }: Props) {
   const paragraphs = story.paragraphs.map((p) =>
     fillTenure(p, restaurant.foundedYear)
   );
+  // Resolve the photo: render only if content set storyImage AND the file is on disk.
+  const renderableImage =
+    story.storyImage && publicAssetExists(story.storyImage.src)
+      ? story.storyImage
+      : null;
+
   return (
     <section
       id="story"
@@ -21,15 +43,18 @@ export function Story({ restaurant }: Props) {
     >
       <div className="container grid gap-12 md:grid-cols-12 md:gap-16">
         <div className="md:col-span-5">
-          {story.photo ? (
-            <Image
-              src={story.photo.src}
-              alt={story.photo.alt}
-              width={story.photo.width}
-              height={story.photo.height}
-              className="h-auto w-full rounded-card object-cover"
-              sizes="(min-width: 768px) 40vw, 100vw"
-            />
+          {renderableImage ? (
+            // Aspect-[4/5] portrait container reserves layout space (CLS-free) regardless
+            // of the actual image's dimensions; next/image fill mode handles the cover.
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-card">
+              <Image
+                src={renderableImage.src}
+                alt={renderableImage.alt}
+                fill
+                className="object-cover"
+                sizes="(min-width: 768px) 40vw, 100vw"
+              />
+            </div>
           ) : (
             <div
               role="presentation"
