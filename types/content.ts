@@ -151,7 +151,19 @@ export interface SocialLinks {
 export interface GalleryImage {
   /** Public path or remote URL. Remote hosts must be allowlisted in next.config.mjs. */
   src: string;
+  /**
+   * Long, descriptive alt text — for accessibility AND SEO. Mirrors the filename-SEO
+   * convention; this is the primary signal Google uses for image search.
+   * Example: "Curry goat and roti at Bamboo Fire Cafe in Delray Beach"
+   */
   alt: string;
+  /**
+   * Short visible label rendered as an overlay on the grid and below the lightbox image.
+   * Punchy, dish-only — no need to repeat the restaurant or city since the page already
+   * provides that context.
+   * Example: "Curry Goat"
+   */
+  caption: string;
   /** Aspect hint — used to keep CLS at 0. */
   width: number;
   height: number;

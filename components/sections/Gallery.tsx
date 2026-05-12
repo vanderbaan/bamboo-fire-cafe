@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { GalleryGrid } from "@/components/GalleryGrid";
 import type { RestaurantContent } from "@/types/content";
 
 interface Props {
@@ -6,8 +6,8 @@ interface Props {
 }
 
 /**
- * v1: simple responsive grid, no JS lightbox. The brief calls for a lightbox; deferring to v1.5
- * to avoid client-bundle weight on the marketing page. Tap-to-fullscreen is good enough for now.
+ * Gallery section. Heading stays server-rendered; the grid + lightbox interaction live in
+ * the client-side GalleryGrid component. Same server/client split as the Menu section.
  */
 export function Gallery({ restaurant }: Props) {
   const { gallery } = restaurant;
@@ -31,24 +31,7 @@ export function Gallery({ restaurant }: Props) {
           </h2>
         </header>
 
-        <ul className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
-          {gallery.map((img, i) => (
-            <li
-              key={`${img.src}-${i}`}
-              className="overflow-hidden rounded-card bg-surface shadow-card"
-            >
-              <Image
-                src={img.src}
-                alt={img.alt}
-                width={img.width}
-                height={img.height}
-                className="aspect-square h-full w-full object-cover transition-transform duration-300 hover:scale-[1.02]"
-                sizes="(min-width: 768px) 33vw, 50vw"
-                loading={i < 3 ? "eager" : "lazy"}
-              />
-            </li>
-          ))}
-        </ul>
+        <GalleryGrid items={gallery} />
       </div>
     </section>
   );
