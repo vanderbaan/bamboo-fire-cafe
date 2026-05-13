@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef } from "react";
 import { ArrowUpRight, ChevronDown, Phone } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { useOrderDropdown } from "@/contexts/OrderDropdownContext";
 import { displayPhone } from "@/lib/phone";
+import { scrollToMenuSection } from "@/lib/scrollToMenu";
 import type { Ordering } from "@/types/content";
 
 interface Props {
@@ -48,7 +50,11 @@ const DELIVERY_LABEL: Record<NonNullable<Ordering["delivery"]>["provider"], stri
  *     and the menu is small enough that it doesn't trap users).
  */
 export function OrderDropdown({ ordering, size = "sm" }: Props) {
-  const [open, setOpen] = useState(false);
+  // open/setOpen come from the shared context (see contexts/OrderDropdownContext.tsx). The
+  // Hero "Order" CTA calls setOpen(true) directly so this same dropdown — not a separate
+  // hero-local instance — is what opens after the page scrolls to the menu. The dropdown
+  // mounts in the Nav, which is sticky, so the popover stays visible post-scroll.
+  const { open, setOpen } = useOrderDropdown();
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -82,7 +88,10 @@ export function OrderDropdown({ ordering, size = "sm" }: Props) {
       document.removeEventListener("mousedown", onMouseDown);
       document.removeEventListener("keydown", onKey);
     };
-  }, [open]);
+    // setOpen comes from a custom hook so the linter can't see that it's the stable setter
+    // from useState in the Provider — we list it to satisfy exhaustive-deps without
+    // triggering re-runs (the reference is stable across renders).
+  }, [open, setOpen]);
 
   // On open, focus the first menuitem. RAF defers focus until after the menu has rendered.
   //
@@ -122,44 +131,15 @@ export function OrderDropdown({ ordering, size = "sm" }: Props) {
   const close = () => setOpen(false);
 
   /**
-   * On open, also smooth-scroll to the menu so the customer sees what they're choosing
-   * between while the popover reveals their pickup/delivery options. We skip the scroll
-   * on close — auto-scrolling on dismiss would feel hostile.
-   *
-   * Two implementation details that earned their way in after a bug report:
-   *
-   * 1. State flip happens FIRST, then the scroll runs inside requestAnimationFrame. The
-   *    earlier "scroll then setOpen" version raced — when the user was scrolled BELOW the
-   *    menu (Press / FAQ / Reviews), Chrome would sometimes drop the upward smooth scroll
-   *    if the popover's mount-time layout shift kicked in mid-animation. Deferring the
-   *    scroll past the React commit dodges that.
-   *
-   * 2. We compute the target y manually and call window.scrollTo, instead of relying on
-   *    scrollIntoView({block:"start"}) + html scroll-padding-top. scroll-padding-top is
-   *    correct in spec, but its interaction with scrollIntoView varies across browsers,
-   *    and the explicit math gives identical behavior on every engine.
-   *
-   * scroll-padding-top in app/globals.css still earns its keep for the Hero "View Menu"
-   * anchor link (which uses the browser's native anchor scroll, where scroll-padding works
-   * reliably). It's just no longer load-bearing here.
-   *
-   * Reduced-motion users: window.scrollTo({behavior:"smooth"}) honors prefers-reduced-motion
-   * automatically — modern browsers downgrade smooth → auto when the OS preference is set.
+   * Toggle open/closed on trigger click. When transitioning closed→open, also fire the
+   * smooth scroll to the menu via the shared `scrollToMenuSection` util. The scroll/state-
+   * order, the RAF, and the bug-history are documented in lib/scrollToMenu.ts.
    */
   const handleTriggerClick = () => {
     const willOpen = !open;
     setOpen(willOpen);
     if (!willOpen) return;
-
-    requestAnimationFrame(() => {
-      const menuEl = document.getElementById("menu");
-      if (!menuEl) return;
-      // Nav heights mirror Nav.tsx: h-20 (80px) mobile, h-24 (96px) at md+.
-      const navHeight = window.innerWidth >= 768 ? 96 : 80;
-      const targetY =
-        menuEl.getBoundingClientRect().top + window.scrollY - navHeight;
-      window.scrollTo({ top: targetY, behavior: "smooth" });
-    });
+    scrollToMenuSection();
   };
 
   const deliveryLabel = ordering.delivery

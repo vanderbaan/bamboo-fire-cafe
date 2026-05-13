@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
+import { OrderDropdownProvider } from "@/contexts/OrderDropdownContext";
 import { restaurant } from "@/content/restaurant";
 import "./globals.css";
 
@@ -82,7 +83,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-      <body>{children}</body>
+      <body>
+        {/* OrderDropdownProvider lifts the dropdown's open state out of the Nav so the
+            Hero "Order" CTA can open the same (sticky) dropdown instead of its own. Lives
+            at the root so any future cross-tree consumer can also reach it. */}
+        <OrderDropdownProvider>{children}</OrderDropdownProvider>
+      </body>
     </html>
   );
 }

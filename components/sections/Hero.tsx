@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ButtonLink } from "@/components/ui/Button";
+import { HeroOrderButton } from "@/components/HeroOrderButton";
 import { OpenNowBadge } from "@/components/OpenNowBadge";
-import { OrderDropdown } from "@/components/OrderDropdown";
 import { MapPin, Phone } from "lucide-react";
 import { displayPhone } from "@/lib/phone";
 import { fillTenure, yearsSince } from "@/lib/tenure";
@@ -19,16 +19,10 @@ export function Hero({ restaurant }: Props) {
   const headline = restaurant.hero.headline ?? restaurant.name;
 
   return (
-    // overflow-hidden removed and z-10 added so the OrderDropdown popover, which positions
-    // absolute below its trigger near the bottom of the hero, can render past the hero's
-    // box and paint above the Story section beneath it while the page is mid-scroll. The
-    // background image and gradient inside the absolute inset-0 -z-10 wrapper are already
-    // constrained to the section's bounds (next/image fill), so removing overflow-hidden
-    // doesn't expose any image overflow.
     <section
       id="top"
       aria-labelledby="hero-heading"
-      className="relative isolate z-10"
+      className="relative isolate overflow-hidden"
     >
       <div className="absolute inset-0 -z-10">
         <Image
@@ -88,19 +82,16 @@ export function Hero({ restaurant }: Props) {
           </ul>
 
           {/*
-            Unified ordering CTA: same OrderDropdown component as the nav, just sized large.
-            One click does both jobs — smooth-scrolls the page to the menu AND opens the
-            pickup/delivery popover. The popover momentarily overlaps the Story section
-            below the hero (made possible by removing overflow-hidden + adding z-10 to the
-            section, see comment above). After the smooth scroll completes the hero is off
-            the viewport and the nav's identical OrderDropdown remains available for the
-            customer to revisit the options.
+            HeroOrderButton triggers the SINGLE OrderDropdown that lives in the Nav (via
+            shared context — see contexts/OrderDropdownContext.tsx). One click opens that
+            dropdown AND smooth-scrolls to the menu. Because the Nav is sticky, the dropdown
+            stays visible above the menu after the scroll lands.
 
             View Menu is the secondary action — visual hierarchy: big red Order button on
             top, outlined View Menu below it next to the OpenNow status badge.
           */}
           <div className="mt-8 flex flex-col items-start gap-5">
-            <OrderDropdown ordering={restaurant.ordering} size="lg" />
+            <HeroOrderButton />
 
             <div className="flex flex-wrap items-center gap-3">
               <ButtonLink
