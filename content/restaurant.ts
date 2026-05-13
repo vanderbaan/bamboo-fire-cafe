@@ -309,6 +309,36 @@ export const restaurant: RestaurantContent = {
       // Stabroek News URL TBD; using site root until Beverly supplies the article link.
       url: "https://www.stabroeknews.com/",
     },
+    {
+      publication: "Broward Palm Beach (New Times)",
+      date: "2024", // CONFIRM exact publication date when located
+      paraphrase:
+        "Caribbean cooking with real depth and a family at the heart of it — worth the trip to Delray.",
+      url: "https://www.browardpalmbeach.com/food-drink/bamboo-fire-caf-in-delray-beach-is-worth-the-wait-6335073",
+    },
+    {
+      publication: "The Coastal Star",
+      date: "2024", // CONFIRM
+      paraphrase:
+        "Beverly Jacobs' kitchen continues to define Caribbean dining in Delray Beach.",
+      url: "https://thecoastalstar.com/profiles/blogs/the-plate-a-chicken-dish-that-hangs-fire",
+    },
+    {
+      publication: "Foodie Fort Lauderdale (TikTok)",
+      date: "2022",
+      paraphrase:
+        "Pan-Caribbean cooking that makes the trip from Fort Lauderdale worth it.",
+      url: "https://www.tiktok.com/@foodiefortlauderdale/video/7099658461201403178",
+      type: "video",
+    },
+    {
+      publication: "YouTube — Caribbean Food Tour",
+      date: "2023", // CONFIRM
+      paraphrase:
+        "Featured in a Delray Beach food walk highlighting independent Caribbean kitchens.",
+      url: "https://youtu.be/NR-8_qq_pjI",
+      type: "video",
+    },
   ],
 
   // Aggregate stats per platform — drives the "stats band" above the prose review snippets.

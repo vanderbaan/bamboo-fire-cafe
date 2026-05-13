@@ -60,10 +60,16 @@ export interface MenuSection {
 
 export interface PressItem {
   publication: string;
-  date: string; // human-readable, e.g. "March 2022"
+  date: string; // human-readable, e.g. "March 2022" or just "2024"
   /** Paraphrased blurb — never lift verbatim from the source article. */
   paraphrase: string;
   url: string;
+  /**
+   * Optional media type — defaults to "article" when omitted. Used by Press.tsx to swap
+   * the icon (PlayCircle vs ExternalLink) and the CTA copy ("Watch the video" vs
+   * "Read the article") on video mentions.
+   */
+  type?: "article" | "video";
 }
 
 export interface ReviewItem {

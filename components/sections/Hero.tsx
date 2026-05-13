@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ButtonLink } from "@/components/ui/Button";
 import { OpenNowBadge } from "@/components/OpenNowBadge";
+import { OrderDropdown } from "@/components/OrderDropdown";
 import { MapPin, Phone } from "lucide-react";
 import { displayPhone } from "@/lib/phone";
 import { fillTenure, yearsSince } from "@/lib/tenure";
@@ -10,14 +11,6 @@ interface Props {
   restaurant: RestaurantContent;
 }
 
-/** Pretty-print a delivery provider id for the secondary CTA label. */
-const DELIVERY_LABEL: Record<string, string> = {
-  ubereats: "Uber Eats",
-  doordash: "DoorDash",
-  grubhub: "Grubhub",
-  uberdirect: "delivery",
-};
-
 export function Hero({ restaurant }: Props) {
   // Both the subhead and the info row derive from foundedYear — keeping the two phrasings
   // pinned to the same number so they can't drift apart in copy edits.
@@ -26,10 +19,16 @@ export function Hero({ restaurant }: Props) {
   const headline = restaurant.hero.headline ?? restaurant.name;
 
   return (
+    // overflow-hidden removed and z-10 added so the OrderDropdown popover, which positions
+    // absolute below its trigger near the bottom of the hero, can render past the hero's
+    // box and paint above the Story section beneath it while the page is mid-scroll. The
+    // background image and gradient inside the absolute inset-0 -z-10 wrapper are already
+    // constrained to the section's bounds (next/image fill), so removing overflow-hidden
+    // doesn't expose any image overflow.
     <section
       id="top"
       aria-labelledby="hero-heading"
-      className="relative isolate overflow-hidden"
+      className="relative isolate z-10"
     >
       <div className="absolute inset-0 -z-10">
         <Image
@@ -89,38 +88,19 @@ export function Hero({ restaurant }: Props) {
           </ul>
 
           {/*
-            Two-tier order CTA.
-              • Primary: brand-fire phone-pickup button — highest margin for the merchant.
-              • Secondary: muted text-link to the delivery marketplace storefront. Renders only
-                when ordering.delivery.url is set, so merchants who aren't on a delivery
-                platform get a single CTA instead of an awkward dangling link.
-            "View Menu" stays as a tertiary outline button on a separate row so it doesn't
-            compete with the primary action's visual weight, and on mobile each row stacks
-            cleanly with the primary order button on top.
+            Unified ordering CTA: same OrderDropdown component as the nav, just sized large.
+            One click does both jobs — smooth-scrolls the page to the menu AND opens the
+            pickup/delivery popover. The popover momentarily overlaps the Story section
+            below the hero (made possible by removing overflow-hidden + adding z-10 to the
+            section, see comment above). After the smooth scroll completes the hero is off
+            the viewport and the nav's identical OrderDropdown remains available for the
+            customer to revisit the options.
+
+            View Menu is the secondary action — visual hierarchy: big red Order button on
+            top, outlined View Menu below it next to the OpenNow status badge.
           */}
           <div className="mt-8 flex flex-col items-start gap-5">
-            <div className="flex flex-col items-start gap-2.5">
-              <ButtonLink
-                href={`tel:${restaurant.ordering.pickup.phoneNumber}`}
-                variant="primary"
-                size="lg"
-              >
-                Call to Order Pickup
-              </ButtonLink>
-              {restaurant.ordering.delivery?.url && (
-                <a
-                  href={restaurant.ordering.delivery.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-surface/80 underline-offset-4 hover:text-surface hover:underline"
-                >
-                  Or order delivery via{" "}
-                  {DELIVERY_LABEL[restaurant.ordering.delivery.provider] ??
-                    "delivery"}{" "}
-                  →
-                </a>
-              )}
-            </div>
+            <OrderDropdown ordering={restaurant.ordering} size="lg" />
 
             <div className="flex flex-wrap items-center gap-3">
               <ButtonLink

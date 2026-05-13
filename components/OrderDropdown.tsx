@@ -8,6 +8,11 @@ import type { Ordering } from "@/types/content";
 
 interface Props {
   ordering: Ordering;
+  /**
+   * Trigger button size. Defaults to "sm" for the nav usage. The Hero instance overrides
+   * to "lg" so the page's primary CTA carries enough visual weight.
+   */
+  size?: "sm" | "md" | "lg";
 }
 
 /** Pretty-print a delivery provider id for menu copy. */
@@ -42,7 +47,7 @@ const DELIVERY_LABEL: Record<NonNullable<Ordering["delivery"]>["provider"], stri
  *     case anyone prefers it (deviation from strict ARIA menu pattern, but more permissive
  *     and the menu is small enough that it doesn't trap users).
  */
-export function OrderDropdown({ ordering }: Props) {
+export function OrderDropdown({ ordering, size = "sm" }: Props) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -167,7 +172,7 @@ export function OrderDropdown({ ordering }: Props) {
         ref={triggerRef}
         type="button"
         variant="primary"
-        size="sm"
+        size={size}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={menuId}
