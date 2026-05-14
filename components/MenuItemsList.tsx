@@ -21,11 +21,40 @@ interface RowProps {
  * duplicating the JSX between them.
  */
 function RowInner({ item, hasPhoto }: RowProps) {
+  // Right-side price slot. Three mutually-exclusive renderings:
+  //   • sizes set → render the size variants joined by " · " (e.g. "Sm $12 · Lg $15")
+  //   • plain price → render as-is
+  //   • neither → empty
+  let priceSlot: React.ReactNode = null;
+  if (item.sizes && item.sizes.length > 0) {
+    priceSlot = (
+      <span className="shrink-0 font-normal tabular-nums text-ink-muted">
+        {item.sizes.map((s) => `${s.label} ${s.price}`).join(" · ")}
+      </span>
+    );
+  } else if (item.price) {
+    // Price softened from font-medium → font-normal per menu-engineering pass:
+    // keeps prices legible without making them the visual focus of the row.
+    priceSlot = (
+      <span className="shrink-0 font-normal tabular-nums text-ink-muted">
+        {item.price}
+      </span>
+    );
+  }
+
   return (
     <>
       <div className="flex items-baseline justify-between gap-3">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <span className="font-medium text-ink">{item.name}</span>
+          {/* NEW badge: distinct from MenuTag pills (which are dietary). Bamboo-green
+              solid with white text reads as a confident editorial flag, not a dietary
+              note. Rendered before tags so it sits closest to the dish name. */}
+          {item.isNew && (
+            <span className="inline-flex items-center rounded-full bg-brand-bamboo px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wider text-white">
+              New
+            </span>
+          )}
           {item.tags?.map((t) => (
             <MenuTag key={t} tag={t} />
           ))}
@@ -36,14 +65,26 @@ function RowInner({ item, hasPhoto }: RowProps) {
             />
           )}
         </div>
-        {item.price && (
-          <span className="shrink-0 font-medium tabular-nums text-ink-muted">
-            {item.price}
-          </span>
-        )}
+        {priceSlot}
       </div>
       {item.description && (
         <p className="text-sm text-ink-muted">{item.description}</p>
+      )}
+      {/* Protein/topping add-ons rendered as a small indented list. The "+" prefix in
+          the price communicates additive nature; matching alignment with the main price
+          slot keeps the column tidy at row scale. */}
+      {item.addOns && item.addOns.length > 0 && (
+        <ul className="mt-1 space-y-0.5 pl-3 text-sm text-ink-muted">
+          {item.addOns.map((a) => (
+            <li
+              key={a.name}
+              className="flex items-baseline justify-between gap-3"
+            >
+              <span>+ {a.name}</span>
+              <span className="shrink-0 tabular-nums">{a.price}</span>
+            </li>
+          ))}
+        </ul>
       )}
     </>
   );

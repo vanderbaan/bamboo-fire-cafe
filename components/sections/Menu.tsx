@@ -31,32 +31,44 @@ export function Menu({ restaurant }: Props) {
         </header>
 
         <div className="mt-14 space-y-14">
-          {menu.sections.map((section) => (
-            <div key={section.title}>
-              <div className="mb-6 flex flex-wrap items-baseline justify-between gap-3 border-b border-ink/10 pb-3">
-                <h3 className="font-serif text-2xl text-ink">{section.title}</h3>
-                {section.priceRangeIndicator && (
-                  <span className="text-sm text-ink-muted">
-                    {section.priceRangeIndicator}
-                  </span>
+          {/*
+            Sections with zero items are filtered out so optional sections (Today's Special,
+            Seasonal) don't render hollow headings when Beverly hasn't published a special
+            for the day. To enable a section, just add items in content/restaurant.ts.
+          */}
+          {menu.sections
+            .filter((section) => section.items.length > 0)
+            .map((section) => (
+              <div key={section.title}>
+                <div className="mb-6 flex flex-wrap items-baseline justify-between gap-3 border-b border-ink/10 pb-3">
+                  <h3 className="font-serif text-2xl text-ink">{section.title}</h3>
+                  {section.priceRangeIndicator && (
+                    <span className="text-sm text-ink-muted">
+                      {section.priceRangeIndicator}
+                    </span>
+                  )}
+                </div>
+
+                {/* Section subhead. Serif + italic gives it editorial weight without
+                    competing with the section heading. Used by "Bar food, Caribbean-style…"
+                    under Loaded Fries and "Build your own…" under Mac & Cheese. */}
+                {section.blurb && (
+                  <p className="mb-6 max-w-prose font-serif text-lg italic text-ink-muted">
+                    {section.blurb}
+                  </p>
                 )}
+                {section.callout && (
+                  <p className="mb-6 inline-block rounded-card bg-brand-bamboo-50 px-4 py-2 text-sm text-brand-bamboo-700">
+                    {section.callout}
+                  </p>
+                )}
+
+                {/* Items grid is delegated to a client island so rows with photos can open the
+                    modal. Rows without photos render the original static layout — no behaviour
+                    difference for items that haven't been wired up with a photo yet. */}
+                <MenuItemsList items={section.items} />
               </div>
-
-              {section.blurb && (
-                <p className="mb-6 max-w-prose text-ink-muted">{section.blurb}</p>
-              )}
-              {section.callout && (
-                <p className="mb-6 inline-block rounded-card bg-brand-bamboo-50 px-4 py-2 text-sm text-brand-bamboo-700">
-                  {section.callout}
-                </p>
-              )}
-
-              {/* Items grid is delegated to a client island so rows with photos can open the
-                  modal. Rows without photos render the original static layout — no behaviour
-                  difference for items that haven't been wired up with a photo yet. */}
-              <MenuItemsList items={section.items} />
-            </div>
-          ))}
+            ))}
         </div>
 
         {menu.footnotes.length > 0 && (

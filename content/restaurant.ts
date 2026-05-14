@@ -117,79 +117,211 @@ export const restaurant: RestaurantContent = {
   },
 
   menu: {
-    // Source: Uber Eats (May 2026). Prices to be confirmed by Beverly for dine-in. UberEats also
-    // has Vegetarian, Mac & Cheese, Extras, and Dessert sections but specific items in those
-    // aren't listed publicly.
+    // Menu-engineered May 2026 across the full Bamboo Fire offering, with prices and item
+    // structure confirmed by Beverly. Section order is intentional — Loaded Fries & Nachos
+    // up high because the highest-margin starters drive bigger checks; high-end anchor items
+    // (Lamb Chops, Snapper Filet) sit at the end of their sections; signature flags reserved
+    // for the 5 entrées Beverly is most proud to put her name to. NEW flags reserved for
+    // the 2 just-launched items (Jerk Fries, Guyanese Fried Chicken).
+    //
+    // Sections render in array order; empty sections (Today's Special, Seasonal) are
+    // filtered out by Menu.tsx so they don't show hollow headings.
     sections: [
+      {
+        // Surfaces above all other sections when populated. Empty by default — Beverly adds
+        // a special dish here when there's one to feature; otherwise the section is skipped.
+        title: "Today's Special",
+        items: [],
+      },
       {
         title: "Starters",
         items: [
-          { name: "Jerk Meatballs", price: "$10", description: "Spicy meatballs infused with jerk seasoning.", tags: ["spicy"] },
-          { name: "Tostones with Garlic Sauce", price: "$8", description: "Crispy fried green plantains served with rich garlic sauce." },
-          { name: "Garbanzo Fritos", price: "$7", description: "Crunchy fritos filled with garbanzo beans.", tags: ["V"] },
-          { name: "Conch Ceviche", price: "$16", description: "Fresh conch marinated in a zesty blend of flavors." },
           { name: "Conch Fritters", price: "$11", description: "Tender conch in a crispy fritter." },
-          { name: "Grilled Eggplant Dip", price: "$9", description: "Smoky eggplant blended with creamy goodness.", tags: ["V"] },
-          { name: "Grilled Conch", price: "$16", description: "Tender conch, expertly grilled." },
-          { name: "Plantain Fries", price: "$8", description: "Thinly sliced plantains, crispy outside and soft within.", tags: ["V"] },
+          { name: "Conch Ceviche", price: "$19", description: "Fresh conch marinated in a zesty blend of flavors." },
+          { name: "Grilled Conch", price: "$19", description: "Tender conch, expertly grilled." },
+          { name: "Tostones w/ Garlic Sauce", price: "$9", description: "Crispy fried green plantains with rich garlic sauce.", tags: ["V"] },
+          { name: "Tostones w/ Eggplant Dip", price: "$11", description: "Tostones served with our smoky eggplant dip.", tags: ["V"] },
+          { name: "Eggplant Dip w/ Bread", price: "$10", description: "Smoky eggplant blended with creamy goodness, served with warm bread.", tags: ["V"] },
+          { name: "Eggplant w/ Roti", price: "$15", description: "Curried eggplant with warm roti — Indo-Caribbean comfort.", tags: ["V"] },
+          { name: "Plantain Fries w/ Spicy Aioli", price: "$9", description: "Thinly sliced plantains, crispy outside and soft within, with a spicy aioli on the side.", tags: ["V"] },
+          { name: "Jerk Meatballs", price: "$12", description: "Spicy meatballs infused with jerk seasoning.", tags: ["spicy"] },
+          { name: "Garbanzo Fritos", price: "$9", description: "Cumin-seasoned, crunchy garbanzo fritos.", tags: ["V"] },
           { name: "Dhal (Yellow Lentil Soup)", price: "$9", description: "Traditional yellow lentil soup.", tags: ["V"] },
         ],
       },
       {
-        title: "Salads",
+        title: "Loaded Fries & Nachos",
+        blurb: "Bar food, Caribbean-style. You won't find these anywhere else in Delray.",
         items: [
-          { name: "House Salad", price: "$8", description: "Fresh mixed greens.", tags: ["V"] },
+          {
+            name: "Jerk Fries",
+            price: "$11",
+            description: "Fries tossed in jerk sauce with green onions.",
+            tags: ["spicy"],
+            isNew: true,
+            addOns: [
+              { name: "Chicken", price: "+$4" },
+              { name: "Pork", price: "+$5" },
+              { name: "Shrimp", price: "+$6" },
+            ],
+          },
+          {
+            name: "Tostone Nachos",
+            price: "$13",
+            description: "Tostones, melted cheese, scallions.",
+            addOns: [
+              { name: "Chicken", price: "+$4" },
+              { name: "Pork", price: "+$5" },
+              { name: "Shrimp", price: "+$6" },
+            ],
+          },
         ],
       },
       {
-        title: "Caribbean Entrées",
+        title: "Entrées",
         callout: "Each entrée comes with your choice of rice, vegetables, or sweet plantains.",
         items: [
           {
             name: "Oxtail Pepperpot",
-            price: "$19",
-            description: "Slow-braised oxtail in rich Caribbean pepperpot stew.",
+            price: "$25",
+            description: "Slow-braised oxtail in Beverly's brown sauce pepperpot — Berbice-style, simmered until it falls off the bone.",
             tags: ["signature"],
             image: "/gallery/oxtail-rice-and-peas-bamboo-fire-delray.jpg",
             imageAlt:
               "Bamboo Fire Cafe oxtail pepperpot served over rice and peas in Delray Beach",
           },
-          { name: "Chicken Curry", price: "$16", description: "Tender chicken in fragrant island curry.", tags: ["signature"] },
           {
             name: "Curry Goat",
-            price: "$19",
-            description: "Slow-cooked goat in island curry spices.",
+            price: "$22",
+            description: "Slow-cooked goat in island curry spices — Beverly's recipe from Berbice.",
+            tags: ["signature"],
             image: "/gallery/curry-goat-roti-bamboo-fire-delray-beach.jpg",
             imageAlt: "Curry goat with roti at Bamboo Fire Cafe in Delray Beach",
           },
           {
-            name: "Jerk Chicken",
-            price: "$16",
-            description: "Bamboo Fire's jerk-spiced grilled chicken.",
-            tags: ["signature", "spicy"],
+            name: "Guyanese Fried Chicken (Chicken in the Rough)",
+            price: "$18",
+            description: "Crispy, golden Caribbean fried chicken — the way it's served back home in Berbice.",
+            tags: ["signature"],
+            isNew: true,
+          },
+          {
+            name: "Chicken (jerk, curry or grilled)",
+            price: "$18",
+            description: "Tender Caribbean chicken — choose your style: sticky-smoky jerk, fragrant curry, or grilled with our house rub.",
+            tags: ["signature"],
             image: "/gallery/jerk-chicken-rice-plantains-bamboo-fire-delray.jpg",
             imageAlt:
               "Jerk chicken plate with rice and plantains at Bamboo Fire Cafe Delray Beach",
           },
-          { name: "Grilled Chicken", price: "$16", description: "Caribbean-marinated grilled chicken." },
-          { name: "Jerk Pork", price: "$15", description: "Jerk-spiced grilled pork.", tags: ["spicy"] },
           {
-            name: "Fish in Banana Leaf",
-            price: "Market price (~$25)",
-            description: "Fish wrapped in banana leaf, infused with Caribbean flavors.",
-            image: "/gallery/red-snapper-banana-leaf-caribbean-delray.jpg",
-            imageAlt:
-              "Red snapper baked in banana leaf at Bamboo Fire Cafe, Caribbean restaurant in Delray Beach",
+            name: "Jerk Ribs",
+            price: "$24",
+            description: "Sticky-smoky jerk ribs, slow-cooked, charred over high heat.",
+            tags: ["signature", "spicy"],
           },
-          { name: "Grilled Conch", price: "$18", description: "Tender grilled conch with island spices." },
-          { name: "Cracked Conch", price: "$18", description: "Crispy fried conch, golden and tender." },
-          { name: "Basa", price: "$18", description: "Pan-seared basa with Caribbean seasonings." },
+          { name: "Jerk Platter (ribs, chicken or pork)", price: "$27", description: "A combination platter of jerk-spiced meats.", tags: ["spicy"] },
+          { name: "Pork (jerk or curry)", price: "$20", description: "Caribbean pork — your choice of jerk or curry." },
+          { name: "Basa (jerk, curry, grilled or escovitch)", price: "$20", description: "Pan-prepared basa with your choice of Caribbean preparation." },
+          { name: "Conch (cracked or grilled)", price: "$22", description: "Tender conch, prepared cracked or grilled." },
+          { name: "Shrimp (coconut, curry, creole, jerk or grilled)", price: "$22", description: "Caribbean shrimp — pick your preparation." },
+          { name: "Grilled Lamb Chops", price: "$29", description: "Caribbean-rubbed lamb chops, charred to order — the high-end anchor of the menu." },
+        ],
+      },
+      {
+        title: "Seafood",
+        items: [
+          { name: "Corvina", price: "$25", description: "Fresh corvina, prepared Caribbean-style." },
+          { name: "Grouper", price: "$27", description: "Whole or filet grouper with our house spice." },
+          { name: "Snapper Filet", price: "$28", description: "Pan-prepared snapper filet, the high-end fish anchor." },
+        ],
+      },
+      {
+        title: "Mac & Cheese",
+        blurb: "Build your own. Start with our creamy base, add what you want.",
+        items: [
+          {
+            name: "Classic Mac",
+            description: "Our creamy three-cheese base.",
+            tags: ["V"],
+            sizes: [
+              { label: "Sm", price: "$12" },
+              { label: "Lg", price: "$15" },
+            ],
+            addOns: [
+              { name: "Chicken", price: "+$4" },
+              { name: "Pork", price: "+$5" },
+              { name: "Shrimp", price: "+$6" },
+              { name: "Fish / Lobster / Seafood", price: "MKT" },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Plant Based",
+        items: [
+          { name: "Tofu (jerk, curry, grilled or escovitch)", price: "$18", description: "Caribbean-prepared tofu — pick your style.", tags: ["V"] },
+          { name: "Coconut Tofu", price: "$17", description: "Coconut-crusted tofu with sweet chili.", tags: ["V"] },
+          { name: "Veggie Lo Mein", price: "$17", description: "Caribbean-style lo mein with vegetables.", tags: ["V"] },
+          { name: "Veggie (curry or jerk)", price: "$17", description: "Cauliflower-forward vegetable plate, your spice.", tags: ["V"] },
+        ],
+      },
+      {
+        title: "Salads",
+        items: [
+          {
+            name: "House Salad",
+            price: "$9",
+            description: "Fresh mixed greens.",
+            tags: ["V"],
+            addOns: [
+              { name: "Chicken", price: "+$6" },
+              { name: "Pork", price: "+$8" },
+              { name: "Shrimp", price: "+$10" },
+            ],
+          },
+        ],
+      },
+      {
+        // Same skip-if-empty pattern as Today's Special. Used for limited-time market items.
+        // When Beverly lists a seasonal catch, add it here and it'll appear; remove the entry
+        // when it's no longer available and the section hides itself again.
+        title: "Seasonal",
+        items: [],
+        // Reference for what tends to show up here: lobster, monkfish, yellowtail, grouper,
+        // crab — typically priced "MKT" because the dock price moves.
+      },
+      {
+        title: "Extras",
+        items: [
+          { name: "White Rice", price: "$6", tags: ["V"] },
+          { name: "Rice & Peas", price: "$8", tags: ["V"] },
+          { name: "Okra Fried Rice", price: "$8", tags: ["V"] },
+          { name: "Potato Fries", price: "$8", tags: ["V"] },
+          { name: "Sweet Potato Fries", price: "$10", tags: ["V"] },
+          { name: "Sweet Plantains", price: "$8", tags: ["V"] },
+          { name: "Veggie Side", price: "$8", tags: ["V"] },
+          { name: "Garlic Toast", price: "$6", tags: ["V"] },
+          { name: "Roti", price: "$4.50", tags: ["V"] },
+        ],
+      },
+      {
+        title: "Dessert",
+        items: [
+          {
+            name: "Rumcake with Ice Cream",
+            description: "House signature, rum-soaked and spiced, served with vanilla ice cream.",
+            sizes: [
+              { label: "Sm", price: "$8" },
+              { label: "Lg", price: "$10" },
+            ],
+          },
+          { name: "Guava Cheesecake", price: "$10", description: "Creamy cheesecake with a tropical guava swirl." },
         ],
       },
     ],
     footnotes: [
       "Ask us about dietary adjustments — vegetarian, gluten-free and dairy-free swaps are usually doable with notice.",
-      "Vegetarian, mac & cheese, extras, and dessert sections also available — ask us about tonight's options.",
     ],
     cateringTeaser:
       "Catering menu coming soon. For private events, family-style trays and large orders, email us and we'll quote you fast.",

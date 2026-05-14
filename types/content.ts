@@ -30,12 +30,31 @@ export interface MenuItem {
   /** Optional short blurb (≤120 chars). Skip if the dish name speaks for itself. */
   description?: string;
   /**
-   * Display string — flexible to accommodate "$10", "Market price", "Market price (typically $25)".
-   * Optional so legacy sections that only show a price-range indicator still work.
+   * Display string — flexible to accommodate "$10", "MKT", "Market price (~$25)", or "+$5"
+   * for add-on items. Optional so size-variant items (which use `sizes` below) and
+   * legacy sections that only show a price-range indicator still work.
    */
   price?: string;
+  /**
+   * Size-variant pricing — Classic Mac (Sm/Lg), Rumcake (Sm/Lg). When set, `price` is
+   * typically omitted; the row renders the variants inline (e.g. "Sm $12 · Lg $15").
+   */
+  sizes?: ReadonlyArray<{ label: string; price: string }>;
+  /**
+   * Protein/topping add-ons rendered as a small indented list below the description.
+   * The "+" prefix in the price string communicates the additive nature visually.
+   * Example: { name: "Chicken", price: "+$4" }.
+   */
+  addOns?: ReadonlyArray<{ name: string; price: string }>;
   /** Dietary tags — fill in once owner confirms. */
   tags?: ReadonlyArray<"V" | "VG" | "GF" | "DF" | "spicy" | "signature">;
+  /**
+   * Surfaces a "NEW" pill next to the dish name. Distinct from tags because it isn't a
+   * dietary marker — it's an editorial flag the merchant toggles for a release window.
+   * Remove the field once the dish stops feeling new (the absence of the flag is the
+   * "this isn't new anymore" state — no boolean false needed).
+   */
+  isNew?: boolean;
   /**
    * Path under /public for a photo of the dish. When set, the menu row becomes clickable
    * and opens a photo modal. Reuse gallery filenames where possible so a single image asset

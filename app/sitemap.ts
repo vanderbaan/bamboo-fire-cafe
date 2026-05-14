@@ -19,5 +19,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    {
+      url: `${SITE_URL}/menu`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9, // High priority: it's the QR-code landing surface
+    },
   ];
 }

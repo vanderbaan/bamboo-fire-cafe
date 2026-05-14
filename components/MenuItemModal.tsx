@@ -131,16 +131,28 @@ export function MenuItemModal({ item, onClose }: Props) {
             >
               {item.name}
             </h2>
-            {item.price && (
-              <span className="shrink-0 font-serif text-xl font-medium text-ink md:text-2xl">
+            {/* Price slot: sizes win over price when both are set (size-variant items
+                like Classic Mac use sizes; everything else uses price). Softened weight
+                matches the row treatment. */}
+            {item.sizes && item.sizes.length > 0 ? (
+              <span className="shrink-0 font-serif text-xl font-normal text-ink md:text-2xl">
+                {item.sizes.map((s) => `${s.label} ${s.price}`).join(" · ")}
+              </span>
+            ) : item.price ? (
+              <span className="shrink-0 font-serif text-xl font-normal text-ink md:text-2xl">
                 {item.price}
               </span>
-            )}
+            ) : null}
           </div>
 
-          {item.tags && item.tags.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {item.tags.map((t) => (
+          {(item.isNew || (item.tags && item.tags.length > 0)) && (
+            <div className="mt-3 flex flex-wrap items-center gap-1.5">
+              {item.isNew && (
+                <span className="inline-flex items-center rounded-full bg-brand-bamboo px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wider text-white">
+                  New
+                </span>
+              )}
+              {item.tags?.map((t) => (
                 <MenuTag key={t} tag={t} />
               ))}
             </div>
@@ -150,6 +162,21 @@ export function MenuItemModal({ item, onClose }: Props) {
             <p className="mt-4 leading-relaxed text-ink-muted">
               {item.description}
             </p>
+          )}
+
+          {/* Add-ons rendered as a small indented list, matching the row layout. */}
+          {item.addOns && item.addOns.length > 0 && (
+            <ul className="mt-4 space-y-1 border-t border-ink/10 pt-4 text-sm text-ink-muted">
+              {item.addOns.map((a) => (
+                <li
+                  key={a.name}
+                  className="flex items-baseline justify-between gap-3"
+                >
+                  <span>+ {a.name}</span>
+                  <span className="shrink-0 tabular-nums">{a.price}</span>
+                </li>
+              ))}
+            </ul>
           )}
         </div>
       </div>
