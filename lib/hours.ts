@@ -85,6 +85,9 @@ export function hoursSummary(h: Hours): { label: string; display: string }[] {
 /**
  * Schema.org `openingHours` strings. Excludes closed days.
  * Format example: "Mo 17:00-22:00".
+ *
+ * Kept for backwards compatibility but `schemaOpeningHoursSpecification` is the preferred
+ * Schema.org format and is what lib/schema.ts emits in the Restaurant JSON-LD.
  */
 export function schemaOpeningHours(h: Hours): string[] {
   const map: Record<WeekdayKey, string> = {
@@ -100,6 +103,45 @@ export function schemaOpeningHours(h: Hours): string[] {
   for (const key of ORDER) {
     const iv = h[key];
     if (iv.open && iv.close) out.push(`${map[key]} ${iv.open}-${iv.close}`);
+  }
+  return out;
+}
+
+/**
+ * Schema.org `OpeningHoursSpecification` array — the structured format Google prefers
+ * over the bare `openingHours` strings. Each entry names its day(s) and provides explicit
+ * `opens`/`closes` times. Closed days are excluded entirely.
+ */
+const SCHEMA_DAY: Record<WeekdayKey, string> = {
+  sun: "Sunday",
+  mon: "Monday",
+  tue: "Tuesday",
+  wed: "Wednesday",
+  thu: "Thursday",
+  fri: "Friday",
+  sat: "Saturday",
+};
+
+export interface OpeningHoursSpecificationEntry {
+  "@type": "OpeningHoursSpecification";
+  dayOfWeek: string[];
+  opens: string;
+  closes: string;
+}
+
+export function schemaOpeningHoursSpecification(
+  h: Hours
+): OpeningHoursSpecificationEntry[] {
+  const out: OpeningHoursSpecificationEntry[] = [];
+  for (const key of ORDER) {
+    const iv = h[key];
+    if (!iv.open || !iv.close) continue;
+    out.push({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [SCHEMA_DAY[key]],
+      opens: iv.open,
+      closes: iv.close,
+    });
   }
   return out;
 }

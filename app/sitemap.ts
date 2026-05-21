@@ -25,5 +25,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.9, // High priority: it's the QR-code landing surface
     },
+    {
+      url: `${SITE_URL}/press`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
   ];
 }

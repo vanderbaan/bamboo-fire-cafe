@@ -79,8 +79,8 @@ export const restaurant: RestaurantContent = {
     tue: { open: null, close: null },
     wed: { open: "17:00", close: "22:00" },
     thu: { open: "17:00", close: "22:00" },
-    fri: { open: "17:00", close: "23:00" },
-    sat: { open: "17:00", close: "23:00" },
+    fri: { open: "16:30", close: "23:00" },
+    sat: { open: "16:30", close: "23:00" },
   },
   timezone: "America/New_York",
 
@@ -360,9 +360,12 @@ export const restaurant: RestaurantContent = {
       height: 800,
     },
     {
+      // Caption updated to reflect the May 2026 menu refresh — "Fish in Banana Leaf" left
+      // the menu; Snapper Filet (in the new Seafood section) is the equivalent dish. The
+      // image filename stays the same so cached references and any external links don't 404.
       src: "/gallery/red-snapper-banana-leaf-caribbean-delray.jpg",
       alt: "Red snapper baked in banana leaf at Bamboo Fire Cafe, Caribbean restaurant in Delray Beach",
-      caption: "Fish in Banana Leaf",
+      caption: "Fried Snapper Filet",
       width: 1200,
       height: 800,
     },

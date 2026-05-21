@@ -1,5 +1,5 @@
 import type { Faq, RestaurantContent } from "@/types/content";
-import { schemaOpeningHours } from "./hours";
+import { schemaOpeningHoursSpecification } from "./hours";
 
 /** Build a Schema.org Restaurant + LocalBusiness JSON-LD object for the home page. */
 export function restaurantJsonLd(r: RestaurantContent, siteUrl: string) {
@@ -38,7 +38,10 @@ export function restaurantJsonLd(r: RestaurantContent, siteUrl: string) {
       latitude: r.address.lat,
       longitude: r.address.lng,
     },
-    openingHours: schemaOpeningHours(r.hours),
+    // Structured form (preferred by Google) instead of the older `openingHours` strings —
+    // each entry names the day(s), opens, closes explicitly. Friday/Saturday entries reflect
+    // the 4:30 PM open time per the current schedule.
+    openingHoursSpecification: schemaOpeningHoursSpecification(r.hours),
     hasMenu: `${siteUrl}#menu`,
     sameAs,
     // aggregateRating drives the star-rating display in Google search snippets. Only emitted
