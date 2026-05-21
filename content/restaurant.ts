@@ -17,7 +17,7 @@ import type { RestaurantContent } from "@/types/content";
  *                  (e.g. `bamboo-fire-cafe`, or contracted to `bamboo-fire` when the dish name
  *                  already carries enough specificity)
  *   • [subject]  = what the photo actually shows — dish name, room, exterior, etc.
- *                  (e.g. `dining-room`, `jerk-chicken-rice-plantains`, `red-snapper-banana-leaf`)
+ *                  (e.g. `dining-room`, `jerk-chicken-rice-plantains`, `fried-snapper-filet`)
  *   • [location] = city, neighborhood, or street, lowercase, hyphenated
  *                  (e.g. `delray-beach`, `delray`, `ne-4th-ave-delray`)
  *
@@ -360,11 +360,12 @@ export const restaurant: RestaurantContent = {
       height: 800,
     },
     {
-      // Caption updated to reflect the May 2026 menu refresh — "Fish in Banana Leaf" left
-      // the menu; Snapper Filet (in the new Seafood section) is the equivalent dish. The
-      // image filename stays the same so cached references and any external links don't 404.
-      src: "/gallery/red-snapper-banana-leaf-caribbean-delray.jpg",
-      alt: "Red snapper baked in banana leaf at Bamboo Fire Cafe, Caribbean restaurant in Delray Beach",
+      // Caption + filename updated to reflect the May 2026 menu refresh — "Fish in Banana
+      // Leaf" left the menu; Snapper Filet (in the new Seafood section) is the equivalent
+      // dish. Old URL /gallery/red-snapper-banana-leaf-caribbean-delray.jpg will 404 by
+      // design; the rename realigns asset, caption, and alt text with the live menu.
+      src: "/gallery/fried-snapper-filet-caribbean-delray.jpg",
+      alt: "Fried Snapper Filet at Bamboo Fire Cafe, Delray Beach",
       caption: "Fried Snapper Filet",
       width: 1200,
       height: 800,
