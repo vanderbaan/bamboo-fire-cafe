@@ -230,6 +230,7 @@ export const restaurant: RestaurantContent = {
       },
       {
         title: "Seafood",
+        blurb: "All fish available grilled, escovitch, or wrapped in banana leaf.",
         items: [
           { name: "Corvina", price: "$25", description: "Fresh corvina, prepared Caribbean-style." },
           { name: "Grouper", price: "$27", description: "Whole or filet grouper with our house spice." },
