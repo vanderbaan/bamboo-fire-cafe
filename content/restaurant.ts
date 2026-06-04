@@ -35,7 +35,11 @@ export const restaurant: RestaurantContent = {
   tagline: "Caribbean & World Cuisine",
   cuisine: "Caribbean & World Cuisine",
   foundedYear: 2009, // CONFIRM: Boca Magazine 2022 cited "13 years" → ~2009. Could be 2008–2010.
-  domain: "bamboofiredelray.com",
+  // Production host. Use the www variant because the server 301-redirects apex →
+  // www.bamboofiredelray.com — keeping canonical tags, schema @id/url, OG urls, sitemap,
+  // and robots all aligned with the host that actually resolves. Every absolute URL in
+  // the codebase derives from this field via the SITE_URL fallback pattern.
+  domain: "www.bamboofiredelray.com",
 
   contact: {
     phone: "+15617490973",
@@ -554,9 +558,18 @@ export const restaurant: RestaurantContent = {
     },
   ],
 
+  // Authoritative profile URLs across the platforms that index this restaurant. Drives the
+  // schema `sameAs` array (see lib/schema.ts) so Google can consolidate the same real-world
+  // entity across all of them. TODO: drop in the canonical Google Maps / Business Profile
+  // place URL (the stable `maps.google.com/?cid=...` or `g.co/kgs/...` form, NOT a search
+  // URL) once Jan supplies it.
   social: {
     facebook: "https://www.facebook.com/BambooFireDelray",
-    // CONFIRM: instagram handle if one exists. Currently only Facebook found.
+    instagram: "https://www.instagram.com/firecafebamboo/",
+    yelp: "https://www.yelp.com/biz/bamboo-fire-cafe-delray-beach",
+    tripadvisor:
+      "https://www.tripadvisor.com/Restaurant_Review-g34179-d1604319-Reviews-Bamboo_Fire_Cafe-Delray_Beach_Florida.html",
+    google: "https://maps.google.com/?cid=13601604957515251309",
   },
 
   paymentMethods: ["Credit cards", "Cash", "CashApp", "PayPal"],

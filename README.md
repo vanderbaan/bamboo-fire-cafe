@@ -91,7 +91,7 @@ Per the brief: the logo carries the personality. The site uses generous neutrals
 Copy `.env.example` to `.env.local`:
 
 ```
-NEXT_PUBLIC_SITE_URL=https://bamboofiredelray.com
+NEXT_PUBLIC_SITE_URL=https://www.bamboofiredelray.com
 NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY=
 ```
 
