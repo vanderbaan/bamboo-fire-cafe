@@ -125,8 +125,8 @@ export const restaurant: RestaurantContent = {
     // structure confirmed by Beverly. Section order is intentional — Loaded Fries & Nachos
     // up high because the highest-margin starters drive bigger checks; high-end anchor items
     // (Lamb Chops, Snapper Filet) sit at the end of their sections; signature flags reserved
-    // for the 5 entrées Beverly is most proud to put her name to. NEW flags reserved for
-    // the 2 just-launched items (Jerk Fries, Guyanese Fried Chicken).
+    // for the 5 entrées Beverly is most proud to put her name to. NEW flags ride on the
+    // most recently launched items (currently Wings, Jerk Fries, Guyanese Fried Chicken).
     //
     // Sections render in array order; empty sections (Today's Special, Seasonal) are
     // filtered out by Menu.tsx so they don't show hollow headings.
@@ -140,17 +140,18 @@ export const restaurant: RestaurantContent = {
       {
         title: "Starters",
         items: [
-          { name: "Conch Fritters", price: "$11", description: "Tender conch in a crispy fritter." },
+          { name: "Wings", price: "$15", description: "Jerk or Asian-style.", tags: ["spicy"], isNew: true },
+          { name: "Conch Fritters", price: "$12", description: "Tender conch in a crispy fritter. Served with sweet chili sauce." },
           { name: "Conch Ceviche", price: "$19", description: "Fresh conch marinated in a zesty blend of flavors." },
           { name: "Grilled Conch", price: "$19", description: "Tender conch, expertly grilled." },
           { name: "Tostones w/ Garlic Sauce", price: "$9", description: "Crispy fried green plantains with rich garlic sauce.", tags: ["V"] },
           { name: "Tostones w/ Eggplant Dip", price: "$11", description: "Tostones served with our smoky eggplant dip.", tags: ["V"] },
           { name: "Eggplant Dip w/ Bread", price: "$10", description: "Smoky eggplant blended with creamy goodness, served with warm bread.", tags: ["V"] },
           { name: "Eggplant w/ Roti", price: "$15", description: "Curried eggplant with warm roti — Indo-Caribbean comfort.", tags: ["V"] },
-          { name: "Plantain Fries w/ Spicy Aioli", price: "$9", description: "Thinly sliced plantains, crispy outside and soft within, with a spicy aioli on the side.", tags: ["V"] },
+          { name: "Plantain Fries w/ Spicy Aioli", price: "$10", description: "Thinly sliced plantains, crispy outside and soft within, with a spicy aioli on the side.", tags: ["V"] },
           { name: "Jerk Meatballs", price: "$12", description: "Spicy meatballs infused with jerk seasoning.", tags: ["spicy"] },
           { name: "Garbanzo Fritos", price: "$9", description: "Cumin-seasoned, crunchy garbanzo fritos.", tags: ["V"] },
-          { name: "Dhal (Yellow Lentil Soup)", price: "$9", description: "Traditional yellow lentil soup.", tags: ["V"] },
+          { name: "Dhal (Yellow Lentil Soup)", price: "$10", description: "Traditional yellow lentil soup.", tags: ["V"] },
         ],
       },
       {
@@ -164,9 +165,10 @@ export const restaurant: RestaurantContent = {
             tags: ["spicy"],
             isNew: true,
             addOns: [
-              { name: "Chicken", price: "+$4" },
-              { name: "Pork", price: "+$5" },
-              { name: "Shrimp", price: "+$6" },
+              { name: "Chicken", price: "+$5" },
+              { name: "Pork", price: "+$6" },
+              { name: "Shrimp", price: "+$8" },
+              { name: "Cheese", price: "+$4" },
             ],
           },
           {
@@ -174,16 +176,16 @@ export const restaurant: RestaurantContent = {
             price: "$13",
             description: "Tostones, melted cheese, scallions.",
             addOns: [
-              { name: "Chicken", price: "+$4" },
-              { name: "Pork", price: "+$5" },
-              { name: "Shrimp", price: "+$6" },
+              { name: "Chicken", price: "+$5" },
+              { name: "Pork", price: "+$6" },
+              { name: "Shrimp", price: "+$8" },
             ],
           },
         ],
       },
       {
         title: "Entrées",
-        callout: "Each entrée comes with your choice of rice, vegetables, or sweet plantains.",
+        callout: "Each entrée comes with rice, vegetables, sweet plantains, or salad.",
         items: [
           {
             name: "Oxtail Pepperpot",
@@ -204,7 +206,7 @@ export const restaurant: RestaurantContent = {
           },
           {
             name: "Guyanese Fried Chicken (Chicken in the Rough)",
-            price: "$18",
+            price: "$20",
             description: "Crispy, golden Caribbean fried chicken — the way it's served back home in Berbice.",
             tags: ["signature"],
             isNew: true,
@@ -226,9 +228,6 @@ export const restaurant: RestaurantContent = {
           },
           { name: "Jerk Platter (ribs, chicken or pork)", price: "$27", description: "A combination platter of jerk-spiced meats.", tags: ["spicy"] },
           { name: "Pork (jerk or curry)", price: "$20", description: "Caribbean pork — your choice of jerk or curry." },
-          { name: "Basa (jerk, curry, grilled or escovitch)", price: "$20", description: "Pan-prepared basa with your choice of Caribbean preparation." },
-          { name: "Conch (cracked or grilled)", price: "$22", description: "Tender conch, prepared cracked or grilled." },
-          { name: "Shrimp (coconut, curry, creole, jerk or grilled)", price: "$22", description: "Caribbean shrimp — pick your preparation." },
           { name: "Grilled Lamb Chops", price: "$29", description: "Caribbean-rubbed lamb chops, charred to order — the high-end anchor of the menu." },
         ],
       },
@@ -236,6 +235,9 @@ export const restaurant: RestaurantContent = {
         title: "Seafood",
         blurb: "All fish available grilled, escovitch, or wrapped in banana leaf.",
         items: [
+          { name: "Basa", price: "$20", description: "Jerk, curry, grilled, or escovitch." },
+          { name: "Conch", price: "$22", description: "Cracked or grilled." },
+          { name: "Shrimp", price: "$22", description: "Coconut, curry, creole, jerk, or grilled." },
           { name: "Corvina", price: "$25", description: "Fresh corvina, prepared Caribbean-style." },
           { name: "Grouper", price: "$27", description: "Whole or filet grouper with our house spice." },
           { name: "Snapper Filet", price: "$28", description: "Pan-prepared snapper filet, the high-end fish anchor." },
@@ -254,9 +256,9 @@ export const restaurant: RestaurantContent = {
               { label: "Lg", price: "$15" },
             ],
             addOns: [
-              { name: "Chicken", price: "+$4" },
-              { name: "Pork", price: "+$5" },
-              { name: "Shrimp", price: "+$6" },
+              { name: "Chicken", price: "+$8" },
+              { name: "Pork", price: "+$8" },
+              { name: "Shrimp", price: "+$10" },
               { name: "Fish / Lobster / Seafood", price: "MKT" },
             ],
           },
@@ -266,9 +268,9 @@ export const restaurant: RestaurantContent = {
         title: "Plant Based",
         items: [
           { name: "Tofu (jerk, curry, grilled or escovitch)", price: "$18", description: "Caribbean-prepared tofu — pick your style.", tags: ["V"] },
-          { name: "Coconut Tofu", price: "$17", description: "Coconut-crusted tofu with sweet chili.", tags: ["V"] },
-          { name: "Veggie Lo Mein", price: "$17", description: "Caribbean-style lo mein with vegetables.", tags: ["V"] },
-          { name: "Veggie (curry or jerk)", price: "$17", description: "Cauliflower-forward vegetable plate, your spice.", tags: ["V"] },
+          { name: "Coconut Tofu", price: "$20", description: "Coconut-crusted tofu with sweet chili. Made fresh to order.", tags: ["V"] },
+          { name: "Veggie Lo Mein", price: "$18", description: "Caribbean-style lo mein with vegetables.", tags: ["V"] },
+          { name: "Veggie (curry or jerk)", price: "$18", description: "Cauliflower-forward vegetable plate, your spice.", tags: ["V"] },
         ],
       },
       {
@@ -280,7 +282,7 @@ export const restaurant: RestaurantContent = {
             description: "Fresh mixed greens.",
             tags: ["V"],
             addOns: [
-              { name: "Chicken", price: "+$6" },
+              { name: "Chicken", price: "+$8" },
               { name: "Pork", price: "+$8" },
               { name: "Shrimp", price: "+$10" },
             ],
