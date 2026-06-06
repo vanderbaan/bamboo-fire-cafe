@@ -66,7 +66,11 @@ export function Menu({ restaurant }: Props) {
                 {/* Items grid is delegated to a client island so rows with photos can open the
                     modal. Rows without photos render the original static layout — no behaviour
                     difference for items that haven't been wired up with a photo yet. */}
-                <MenuItemsList items={section.items} />
+                <MenuItemsList
+                  items={section.items}
+                  restaurantName={restaurant.name}
+                  restaurantCity={restaurant.address.city}
+                />
               </div>
             ))}
         </div>

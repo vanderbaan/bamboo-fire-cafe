@@ -9,6 +9,10 @@ import type { MenuItem } from "@/types/content";
 interface Props {
   item: MenuItem;
   onClose: () => void;
+  /** Merchant name for the auto-generated image alt fallback. */
+  restaurantName: string;
+  /** Merchant city for the auto-generated image alt fallback. */
+  restaurantCity: string;
 }
 
 /**
@@ -30,7 +34,12 @@ interface Props {
  *  • ESC closes; clicking the backdrop closes; both restore focus to the triggering button.
  *  • body scroll is locked while open.
  */
-export function MenuItemModal({ item, onClose }: Props) {
+export function MenuItemModal({
+  item,
+  onClose,
+  restaurantName,
+  restaurantCity,
+}: Props) {
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
@@ -113,7 +122,14 @@ export function MenuItemModal({ item, onClose }: Props) {
           <div className="relative aspect-[3/2] w-full bg-ink/5">
             <Image
               src={item.image}
-              alt={item.imageAlt ?? item.name}
+              // Auto-generated alt fallback per the menu-photos brief: when imageAlt
+              // isn't explicitly set, build "{name} at {restaurantName}, {city}". Items
+              // can override with their own imageAlt when the dish photo needs richer
+              // descriptive text for accessibility/SEO.
+              alt={
+                item.imageAlt ??
+                `${item.name} at ${restaurantName}, ${restaurantCity}`
+              }
               fill
               sizes="(min-width: 768px) 700px, 100vw"
               quality={80}

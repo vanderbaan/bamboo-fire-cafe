@@ -165,7 +165,11 @@ export default function MenuPage() {
                   </p>
                 )}
 
-                <MenuItemsList items={section.items} />
+                <MenuItemsList
+                  items={section.items}
+                  restaurantName={restaurant.name}
+                  restaurantCity={restaurant.address.city}
+                />
               </div>
             ))}
 

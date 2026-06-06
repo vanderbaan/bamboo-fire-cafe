@@ -140,8 +140,8 @@ export const restaurant: RestaurantContent = {
       {
         title: "Starters",
         items: [
-          { name: "Wings", price: "$15", description: "Jerk or Asian-style.", tags: ["spicy"], isNew: true },
-          { name: "Conch Fritters", price: "$12", description: "Tender conch in a crispy fritter. Served with sweet chili sauce." },
+          { name: "Wings", price: "$15", description: "Jerk or Asian-style.", tags: ["spicy"], isNew: true, image: "/menu/wings-jerk-bamboo-fire-delray.jpg" },
+          { name: "Conch Fritters", price: "$12", description: "Tender conch in a crispy fritter. Served with sweet chili sauce.", image: "/menu/conch-fritters-bamboo-fire-delray.jpg" },
           { name: "Conch Ceviche", price: "$19", description: "Fresh conch marinated in a zesty blend of flavors." },
           { name: "Grilled Conch", price: "$19", description: "Tender conch, expertly grilled." },
           { name: "Tostones w/ Garlic Sauce", price: "$9", description: "Crispy fried green plantains with rich garlic sauce.", tags: ["V"] },
@@ -149,8 +149,8 @@ export const restaurant: RestaurantContent = {
           { name: "Eggplant Dip w/ Bread", price: "$10", description: "Smoky eggplant blended with creamy goodness, served with warm bread.", tags: ["V"] },
           { name: "Eggplant w/ Roti", price: "$15", description: "Curried eggplant with warm roti — Indo-Caribbean comfort.", tags: ["V"] },
           { name: "Plantain Fries w/ Spicy Aioli", price: "$10", description: "Thinly sliced plantains, crispy outside and soft within, with a spicy aioli on the side.", tags: ["V"] },
-          { name: "Jerk Meatballs", price: "$12", description: "Spicy meatballs infused with jerk seasoning.", tags: ["spicy"] },
-          { name: "Garbanzo Fritos", price: "$9", description: "Cumin-seasoned, crunchy garbanzo fritos.", tags: ["V"] },
+          { name: "Jerk Meatballs", price: "$12", description: "Spicy meatballs infused with jerk seasoning.", tags: ["spicy"], image: "/menu/jerk-meatballs-bamboo-fire-delray.jpg" },
+          { name: "Garbanzo Fritos", price: "$9", description: "Cumin-seasoned, crunchy garbanzo fritos.", tags: ["V"], image: "/menu/garbanzo-fritos-bamboo-fire-delray.jpg" },
           { name: "Dhal (Yellow Lentil Soup)", price: "$10", description: "Traditional yellow lentil soup.", tags: ["V"] },
         ],
       },
@@ -175,6 +175,10 @@ export const restaurant: RestaurantContent = {
             name: "Tostone Nachos",
             price: "$13",
             description: "Tostones, melted cheese, scallions.",
+            // Note: file on disk is named with "-pork" suffix (jerk-pork garnish in the
+            // photo). Spec mapping showed the shorter "tostone-nachos-jerk-…" path; using
+            // the actual filename here. Rename file + update if you'd rather the short form.
+            image: "/menu/tostone-nachos-jerk-pork-bamboo-fire-delray.jpg",
             addOns: [
               { name: "Chicken", price: "+$5" },
               { name: "Pork", price: "+$6" },
@@ -210,25 +214,28 @@ export const restaurant: RestaurantContent = {
             description: "Crispy, golden Caribbean fried chicken — the way it's served back home in Berbice.",
             tags: ["signature"],
             isNew: true,
+            image: "/menu/guyanese-fried-chicken-bamboo-fire-delray.jpg",
           },
           {
+            // Image swapped from the gallery jerk-chicken photo to a dedicated /menu/ shot.
+            // Old imageAlt removed so the auto-generated fallback ("{name} at Bamboo Fire
+            // Cafe, Delray Beach") describes the dish accurately for all three prep styles.
             name: "Chicken (jerk, curry or grilled)",
             price: "$18",
             description: "Tender Caribbean chicken — choose your style: sticky-smoky jerk, fragrant curry, or grilled with our house rub.",
             tags: ["signature"],
-            image: "/gallery/jerk-chicken-rice-plantains-bamboo-fire-delray.jpg",
-            imageAlt:
-              "Jerk chicken plate with rice and plantains at Bamboo Fire Cafe Delray Beach",
+            image: "/menu/jerk-chicken-bamboo-fire-delray.jpg",
           },
           {
             name: "Jerk Ribs",
             price: "$24",
             description: "Sticky-smoky jerk ribs, slow-cooked, charred over high heat.",
             tags: ["signature", "spicy"],
+            image: "/menu/jerk-ribs-bamboo-fire-delray.jpg",
           },
-          { name: "Jerk Platter (ribs, chicken or pork)", price: "$27", description: "A combination platter of jerk-spiced meats.", tags: ["spicy"] },
+          { name: "Jerk Platter (ribs, chicken or pork)", price: "$27", description: "A combination platter of jerk-spiced meats.", tags: ["spicy"], image: "/menu/jerk-platter-bamboo-fire-delray.jpg" },
           { name: "Pork (jerk or curry)", price: "$20", description: "Caribbean pork — your choice of jerk or curry." },
-          { name: "Snapper — Whole", price: "$25", description: "Whole fried red snapper, crispy from head to tail." },
+          { name: "Snapper — Whole", price: "$25", description: "Whole fried red snapper, crispy from head to tail.", image: "/menu/snapper-whole-fried-bamboo-fire-delray.jpg" },
           { name: "Grilled Lamb Chops", price: "$29", description: "Caribbean-rubbed lamb chops, charred to order — the high-end anchor of the menu." },
         ],
       },
@@ -238,7 +245,7 @@ export const restaurant: RestaurantContent = {
         items: [
           { name: "Basa", price: "$20", description: "Jerk, curry, grilled, or escovitch." },
           { name: "Conch", price: "$22", description: "Cracked or grilled." },
-          { name: "Shrimp", price: "$22", description: "Coconut, curry, creole, jerk, or grilled." },
+          { name: "Shrimp", price: "$22", description: "Coconut, curry, creole, jerk, or grilled.", image: "/menu/curry-shrimp-bamboo-fire-delray.jpg" },
           { name: "Corvina", price: "$25", description: "Fresh corvina, prepared Caribbean-style." },
           { name: "Grouper", price: "$27", description: "Whole or filet grouper with our house spice." },
           { name: "Snapper Filet", price: "$28", description: "Pan-prepared snapper filet, the high-end fish anchor." },
@@ -252,6 +259,7 @@ export const restaurant: RestaurantContent = {
             name: "Classic Mac",
             description: "Our creamy three-cheese base.",
             tags: ["V"],
+            image: "/menu/mac-and-cheese-bamboo-fire-delray.jpg",
             sizes: [
               { label: "Sm", price: "$12" },
               { label: "Lg", price: "$15" },
@@ -303,8 +311,8 @@ export const restaurant: RestaurantContent = {
         title: "Extras",
         items: [
           { name: "White Rice", price: "$6", tags: ["V"] },
-          { name: "Rice & Peas", price: "$8", tags: ["V"] },
-          { name: "Okra Fried Rice", price: "$8", tags: ["V"] },
+          { name: "Rice & Peas", price: "$8", tags: ["V"], image: "/menu/rice-peas-bamboo-fire-delray.jpg" },
+          { name: "Okra Fried Rice", price: "$8", tags: ["V"], image: "/menu/okra-rice-bamboo-fire-delray.jpg" },
           { name: "Potato Fries", price: "$8", tags: ["V"] },
           { name: "Sweet Potato Fries", price: "$10", tags: ["V"] },
           { name: "Sweet Plantains", price: "$8", tags: ["V"] },
@@ -319,12 +327,13 @@ export const restaurant: RestaurantContent = {
           {
             name: "Rumcake with Ice Cream",
             description: "House signature, rum-soaked and spiced, served with vanilla ice cream.",
+            image: "/menu/rumcake-ice-cream-bamboo-fire-delray.jpg",
             sizes: [
               { label: "Sm", price: "$8" },
               { label: "Lg", price: "$10" },
             ],
           },
-          { name: "Guava Cheesecake", price: "$10", description: "Creamy cheesecake with a tropical guava swirl." },
+          { name: "Guava Cheesecake", price: "$10", description: "Creamy cheesecake with a tropical guava swirl.", image: "/menu/guava-cheesecake-bamboo-fire-delray.jpg" },
         ],
       },
     ],

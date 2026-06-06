@@ -59,22 +59,25 @@ function buildItemOffers(item: MenuItem): unknown {
   return null;
 }
 
-function buildMenuItem(item: MenuItem) {
+function buildMenuItem(item: MenuItem, siteUrl: string) {
   const offers = buildItemOffers(item);
   return {
     "@type": "MenuItem",
     name: item.name,
     ...(item.description ? { description: item.description } : {}),
+    // image URL must be absolute (full https://www.host/...) so Google can crawl and
+    // index it for image rich results. Relative paths would silently fail.
+    ...(item.image ? { image: `${siteUrl}${item.image}` } : {}),
     ...(offers ? { offers } : {}),
   };
 }
 
-function buildMenuSection(section: MenuSection) {
+function buildMenuSection(section: MenuSection, siteUrl: string) {
   return {
     "@type": "MenuSection",
     name: section.title,
     ...(section.blurb ? { description: section.blurb } : {}),
-    hasMenuItem: section.items.map(buildMenuItem),
+    hasMenuItem: section.items.map((item) => buildMenuItem(item, siteUrl)),
   };
 }
 
@@ -92,7 +95,7 @@ export function buildMenuSchema(r: RestaurantContent, siteUrl: string) {
     name: `${r.name} Menu`,
     hasMenuSection: r.menu.sections
       .filter((s) => s.items.length > 0)
-      .map(buildMenuSection),
+      .map((section) => buildMenuSection(section, siteUrl)),
   };
 }
 

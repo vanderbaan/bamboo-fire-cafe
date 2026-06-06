@@ -8,6 +8,9 @@ import type { MenuItem } from "@/types/content";
 
 interface Props {
   items: ReadonlyArray<MenuItem>;
+  /** Merchant name + city — forwarded to MenuItemModal for image alt auto-generation. */
+  restaurantName: string;
+  restaurantCity: string;
 }
 
 interface RowProps {
@@ -102,7 +105,11 @@ function RowInner({ item, hasPhoto }: RowProps) {
  *     the `-m-2 p-2` "expand-while-not-shifting-layout" pattern
  *   • a focus-visible ring so keyboard users see the focused row
  */
-export function MenuItemsList({ items }: Props) {
+export function MenuItemsList({
+  items,
+  restaurantName,
+  restaurantCity,
+}: Props) {
   const [activeItem, setActiveItem] = useState<MenuItem | null>(null);
 
   return (
@@ -136,6 +143,8 @@ export function MenuItemsList({ items }: Props) {
         <MenuItemModal
           item={activeItem}
           onClose={() => setActiveItem(null)}
+          restaurantName={restaurantName}
+          restaurantCity={restaurantCity}
         />
       )}
     </>
