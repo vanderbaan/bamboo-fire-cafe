@@ -7,6 +7,13 @@ interface Props {
 
 export function Menu({ restaurant }: Props) {
   const { menu } = restaurant;
+  // Photo pool used by MenuItemModal's carousel — every item with an image, in section
+  // order. Built once at the section level and passed down to every MenuItemsList so the
+  // carousel can navigate across section boundaries (Dessert ← → Starters etc.).
+  const photoItems = menu.sections
+    .filter((s) => s.items.length > 0)
+    .flatMap((s) => s.items.filter((i) => !!i.image));
+
   return (
     <section
       id="menu"
@@ -68,6 +75,7 @@ export function Menu({ restaurant }: Props) {
                     difference for items that haven't been wired up with a photo yet. */}
                 <MenuItemsList
                   items={section.items}
+                  photoItems={photoItems}
                   restaurantName={restaurant.name}
                   restaurantCity={restaurant.address.city}
                 />

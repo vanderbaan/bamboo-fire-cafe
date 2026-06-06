@@ -106,6 +106,10 @@ export default function MenuPage() {
   const visibleSections = menu.sections.filter((s) => s.items.length > 0);
   const phoneHref = `tel:${restaurant.contact.phone}`;
   const phoneDisplay = displayPhone(restaurant.contact.phone);
+  // Photo pool for the carousel — same construction as components/sections/Menu.tsx.
+  const photoItems = visibleSections.flatMap((s) =>
+    s.items.filter((i) => !!i.image)
+  );
 
   return (
     <>
@@ -167,6 +171,7 @@ export default function MenuPage() {
 
                 <MenuItemsList
                   items={section.items}
+                  photoItems={photoItems}
                   restaurantName={restaurant.name}
                   restaurantCity={restaurant.address.city}
                 />

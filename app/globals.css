@@ -39,6 +39,22 @@
     color: white;
   }
 
+  /* Fade-in used by MenuItemModal when the user navigates between photos in the carousel.
+     Triggered via `key={index}` on the content wrapper — React remounts the element on
+     index change which restarts the animation. Reduced-motion users get an instant swap
+     via the prefers-reduced-motion rule further down. */
+  @keyframes menu-modal-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .animate-menu-modal-fade {
+    animation: menu-modal-fade-in 200ms ease-out;
+  }
+
   /* Respect reduced-motion preferences. */
   @media (prefers-reduced-motion: reduce) {
     html {
