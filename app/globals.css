@@ -9,15 +9,16 @@
 
   html {
     scroll-behavior: smooth;
-    /* Compensate for the sticky <header> (h-20 mobile / h-24 desktop) so anchor scrolls —
-       the Hero "View Menu" button, the Order-button-triggered scroll, and any future in-page
-       nav links — land the section eyebrow below the nav rather than tucked under it. */
-    scroll-padding-top: 5rem;
+    /* Compensate for the sticky <header> (h-24 mobile / h-32 desktop after the watercolor
+       PNG swap) so anchor scrolls — the Hero "View Menu" button, the Order-button-triggered
+       scroll, and any future in-page nav links — land the section eyebrow below the nav
+       rather than tucked under it. */
+    scroll-padding-top: 6rem;
   }
 
   @media (min-width: 768px) {
     html {
-      scroll-padding-top: 6rem;
+      scroll-padding-top: 8rem;
     }
   }
 

@@ -128,6 +128,10 @@ export function restaurantJsonLd(r: RestaurantContent, siteUrl: string) {
     // at the hero JPG used by the homepage Hero — same asset surfaces both as the page
     // hero and as the schema image.
     image: `${siteUrl}/gallery/bamboo-fire-cafe-caribbean-restaurant-delray-beach.jpg`,
+    // `logo` is a separate Schema.org property from `image` — it feeds the Knowledge Graph
+    // brand-logo slot specifically (vs. `image` which feeds image rich results). The
+    // watercolor PNG at /logo.png is the canonical brand asset; absolute URL required.
+    logo: `${siteUrl}/logo.png`,
     priceRange: r.priceRange,
     servesCuisine: [...r.servesCuisine],
     acceptsReservations: r.acceptsReservations,

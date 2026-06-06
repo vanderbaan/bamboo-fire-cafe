@@ -7,13 +7,19 @@ import type { BrandIdentity } from "@/types/content";
  *
  * Canonical hex was extracted from the master SVG — `fill="#69933a"` (BAMBOO) and
  * `fill="#d32e1b"` (FIRE). The brief's earlier approximations (#7CA943, #D43027) are superseded.
+ *
+ * Logo asset: switched to the watercolor PNG at /logo.png (1000×500, 2:1, transparent
+ * background). The wordmark reads "BAMBOO FIRE Delray" — alt reflects that. Previous SVG
+ * (3:1 ratio) stays at /logo.svg in /public for quick rollback if needed.
  */
 export const brand: BrandIdentity = {
-  logoSrc: "/logo.svg",
-  // Source SVG is 1500×500 in viewBox terms; we render at responsive sizes via next/image.
-  logoWidth: 1500,
+  logoSrc: "/logo.png",
+  // 1000×500 (2:1). Render at responsive sizes via next/image; at the Nav's 220 px width
+  // the logo computes to 110 px tall (was ~73 px under the prior 3:1 SVG).
+  logoWidth: 1000,
   logoHeight: 500,
-  logoAlt: "Bamboo Fire Cafe — Caribbean & World Cuisine",
+  logoAlt:
+    "Bamboo Fire Delray watercolor logo — Caribbean & World Cuisine",
   colors: {
     bamboo: "#69933a",
     fire: "#d32e1b",

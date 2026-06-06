@@ -6,7 +6,7 @@
  *   • HeroOrderButton (Hero usage)
  *
  * Both callers need identical scroll behavior — extracted here so the navHeight constants
- * (80/96 mirroring Nav.tsx's h-20/h-24) can't drift between the two call sites.
+ * (96/128 mirroring Nav.tsx's h-24/h-32) can't drift between the two call sites.
  *
  * Wrapped in requestAnimationFrame so callers can fire it synchronously alongside a React
  * state update; the scroll then begins one frame later, after React has committed any
@@ -20,8 +20,8 @@ export function scrollToMenuSection(): void {
   requestAnimationFrame(() => {
     const menuEl = document.getElementById("menu");
     if (!menuEl) return;
-    // Mirror Nav.tsx: h-20 (80px) mobile, h-24 (96px) at md+.
-    const navHeight = window.innerWidth >= 768 ? 96 : 80;
+    // Mirror Nav.tsx: h-24 (96px) mobile, h-32 (128px) at md+.
+    const navHeight = window.innerWidth >= 768 ? 128 : 96;
     const targetY =
       menuEl.getBoundingClientRect().top + window.scrollY - navHeight;
     window.scrollTo({ top: targetY, behavior: "smooth" });

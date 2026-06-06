@@ -45,7 +45,7 @@ export const metadata: Metadata = {
 function MenuPageHeader() {
   return (
     <header className="border-b border-ink/5 bg-surface-warm">
-      <div className="container flex h-20 items-center justify-between gap-4 md:h-24">
+      <div className="container flex h-24 items-center justify-between gap-4 md:h-32">
         <Link
           href="/"
           className="flex items-center"

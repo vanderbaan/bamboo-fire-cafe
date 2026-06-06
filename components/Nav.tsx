@@ -23,19 +23,18 @@ const links = [
 
 export function Nav({ restaurant }: Props) {
   return (
-    // Header is taller than typical (h-20 mobile / h-24 desktop) so the merchant logo —
-    // which is wider than a typical wordmark thanks to the bamboo-leaves art on the left —
-    // has room to breathe at the desktop size the brand wants without overflowing the bar.
+    // Header grew when we swapped from the 3:1 SVG wordmark to the 2:1 watercolor PNG.
+    // h-24 mobile / h-32 desktop accommodates the new logo at 150×75 / 220×110 with a
+    // comfortable margin top and bottom.
     <header className="sticky top-0 z-30 border-b border-ink/5 bg-surface-warm/85 backdrop-blur supports-[backdrop-filter]:bg-surface-warm/70">
-      <div className="container flex h-20 items-center justify-between gap-4 md:h-24">
+      <div className="container flex h-24 items-center justify-between gap-4 md:h-32">
         <Link
           href="/"
           className="flex items-center"
           aria-label={`${restaurant.name} home`}
         >
-          {/* 150px on mobile, 220px on desktop — both sit inside the user-confirmed range
-              (140–160 mobile, 200–240 desktop). Aspect ratio (3:1) yields ~50/73px tall,
-              comfortably inside the h-20/h-24 header. */}
+          {/* 150px on mobile, 220px on desktop. Watercolor PNG aspect (2:1) yields
+              75/110px tall, comfortably inside the h-24/h-32 header. */}
           <Logo
             brand={brand}
             className="w-[150px] md:w-[220px]"
