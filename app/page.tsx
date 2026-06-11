@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/sections/Hero";
 import { Story } from "@/components/sections/Story";
+import { TodaysSpecial } from "@/components/TodaysSpecial";
 import { Menu } from "@/components/sections/Menu";
 import { Gallery } from "@/components/sections/Gallery";
 import { Press } from "@/components/sections/Press";
@@ -10,7 +11,7 @@ import { Reviews } from "@/components/sections/Reviews";
 import { Location } from "@/components/sections/Location";
 import { Footer } from "@/components/sections/Footer";
 import { restaurant } from "@/content/restaurant";
-import { buildFAQSchema, restaurantJsonLd } from "@/lib/schema";
+import { buildFAQSchema, restaurantJsonLdWithSpecials } from "@/lib/schema";
 
 /**
  * Lightweight teaser for the /berbice-kitchen coming-soon page. Sits between Reviews and
@@ -53,8 +54,8 @@ function BerbiceKitchenTeaser() {
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? `https://${restaurant.domain}`;
 
-export default function HomePage() {
-  const restaurantSchema = restaurantJsonLd(restaurant, SITE_URL);
+export default async function HomePage() {
+  const restaurantSchema = await restaurantJsonLdWithSpecials(restaurant, SITE_URL);
   // Emitted as its own script tag so Google can attach FAQ rich snippets to this page
   // independently of the Restaurant/LocalBusiness entity.
   const faqSchema = buildFAQSchema(restaurant.faqs);
@@ -73,6 +74,10 @@ export default function HomePage() {
       <Nav restaurant={restaurant} />
       <main>
         <Hero restaurant={restaurant} />
+        {/* TodaysSpecial is a server component that reads KV directly. It renders nothing
+            when there's no active special for today (NY-tz), so this slot stays empty on
+            ordinary days and the layout collapses without a gap. */}
+        <TodaysSpecial />
         <Story restaurant={restaurant} />
         <Menu restaurant={restaurant} />
         <Gallery restaurant={restaurant} />

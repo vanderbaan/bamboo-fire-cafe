@@ -145,6 +145,82 @@ After DNS propagates (typically 30–60 minutes; sometimes hours), confirm:
 
 Submit the sitemap to Google Search Console after the production domain is live.
 
+## Daily Specials admin
+
+A small CMS lives at `/admin` for Beverly (and Jan) to publish today's special. Single shared password, no menus to maintain — every day gets its own record, photos optional, "Share to Facebook" button at the end.
+
+### Architecture
+
+- **Storage**: Vercel KV (Redis), free tier. One key per day at `specials-schedule:YYYY-MM-DD` (NY-tz date).
+- **Photo storage**: Vercel Blob, free tier. Each upload produces TWO files at the same UUID: `.jpg` (mozjpeg q90) + `.webp` (q85), both ≤1600×1200 with EXIF stripped and auto-rotated. Pipeline runs server-side via sharp.
+- **Auth**: shared password compared with timing-safe equality + 200 ms artificial delay, then a 30-day signed JWT cookie (`bamboo_admin_session`, httpOnly + Secure + SameSite=Lax). Middleware gates `/admin/*` and `/api/admin/*`.
+- **Timezone**: all "today" / week calculations use `America/New_York` via `date-fns-tz`. Day boundary is 00:00 ET.
+
+### Required environment variables
+
+Set these in Vercel → Project Settings → Environment Variables (Production scope at minimum, Preview if you want to test against staging KV):
+
+| Name | Purpose | How to get it |
+|---|---|---|
+| `ADMIN_PASSWORD` | Shared admin password | Pick something memorable + paste here |
+| `ADMIN_JWT_SECRET` | Signs session cookies | `openssl rand -hex 32` (32 bytes of hex) |
+| `KV_REST_API_URL` | KV connection | Vercel dashboard → Storage → Create KV → connect to project (auto-populates) |
+| `KV_REST_API_TOKEN` | KV connection | Same step as above |
+| `BLOB_READ_WRITE_TOKEN` | Blob connection | Vercel dashboard → Storage → Create Blob → connect to project (auto-populates) |
+
+For local dev (`npm run dev`), put the same values in `.env.local`. Without them, KV calls throw at request time — `/admin` will surface the error, the homepage `TodaysSpecial` and JSON-LD `restaurantJsonLdWithSpecials` swallow the error and render as if nothing is published.
+
+### How to use
+
+1. Visit `bamboofiredelray.com/admin` → log in.
+2. Land on the week view (Sun → Sat in NY-tz). Forward/backward up to 4 weeks.
+3. Tap an empty day → editor opens. Add 1–4 items (name + price), optional description + photo.
+4. **Save for [Day]** → record stored, homepage `revalidatePath("/")` so the public card updates within seconds.
+5. **📤 Share to Facebook** → native share sheet on mobile (Beverly picks Facebook from her share UI), clipboard + new tab on desktop.
+6. **Hide special** → saves with `active: false`, preserves data, public card stops rendering.
+7. **Delete day** → confirm by typing the day name. Photo blobs are deleted alongside the record.
+
+### What renders publicly
+
+- **Homepage** (`/`): `TodaysSpecial` server component renders today's card between Hero and Story when there's an active record. Server-fetched from KV; revalidates on every admin save.
+- **JSON-LD**: `restaurantJsonLdWithSpecials` prepends a "Today's Specials" MenuSection to the Restaurant.hasMenu schema when active. Specials get full Schema.org MenuItem entries with Offer + image when set.
+- **`/api/specials/today`**: public read-only endpoint returning JSON (or `null`). Useful for native apps or any external integration.
+
+### Files
+
+```
+app/admin/login/page.tsx          Login screen (client form posts /api/admin/auth)
+app/admin/layout.tsx              Admin shell, noindex
+app/admin/page.tsx                Week view (server + WeekView client component)
+app/admin/day/[date]/page.tsx     Day editor (server + DayEditor client component)
+app/api/admin/auth/route.ts       Password verify + cookie set
+app/api/admin/logout/route.ts     Cookie clear
+app/api/admin/schedule/route.ts   GET week slice
+app/api/admin/day/[date]/route.ts GET/POST/DELETE day; revalidates / and /menu
+app/api/admin/upload-photo/route.ts sharp pipeline + Vercel Blob
+app/api/specials/today/route.ts   Public read for today
+components/TodaysSpecial.tsx      Homepage card
+components/admin/DayCard.tsx      Week-view row
+components/admin/DayEditor.tsx    Day form
+components/admin/PhotoUploader.tsx Photo upload UI
+components/admin/FacebookShareButton.tsx Share helper
+components/admin/WeekView.tsx     Week navigation + day cards
+lib/admin/auth.ts                 jose-based JWT sign/verify
+lib/admin/dates.ts                NY-tz helpers
+lib/admin/kv.ts                   Vercel KV wrapper
+lib/admin/shareText.ts            Facebook share formatter
+lib/admin/types.ts                DayRecord, SpecialItem, etc.
+middleware.ts                     Auth gate for /admin and /api/admin
+```
+
+### Operational notes
+
+- **Cache invalidation**: every successful POST/DELETE on `/api/admin/day/[date]` calls `revalidatePath("/")` and `revalidatePath("/menu")`. Don't add manual cache headers that conflict.
+- **Past days**: editor opens in read-only mode for any date earlier than today (NY-tz). No save/delete buttons surface.
+- **Drafts**: every form change debounces 500 ms then writes to `localStorage[admin-draft-YYYY-MM-DD]`. On reload, if a draft is newer than the server record, a "Draft restored" banner offers Keep / Discard. Cleared on successful save.
+- **Photo cleanup**: when a day's photo changes or the day is deleted, the previous `.jpg` + `.webp` are deleted from Blob first to avoid orphan accumulation.
+- **HEIC support**: sharp on Vercel's Node 20+ runtime accepts HEIC/HEIF from iPhone uploads. If you ever hit "Couldn't read image" errors on iOS, check the runtime — Edge runtime would not work here.
+
 ## Open questions / pending owner decisions
 
 These are flagged in `content/restaurant.ts` with `CONFIRM` comments. Track them as v1.1 issues:

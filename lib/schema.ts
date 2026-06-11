@@ -4,6 +4,9 @@ import type {
   MenuSection,
   RestaurantContent,
 } from "@/types/content";
+import { todayInNY } from "./admin/dates";
+import { getDay } from "./admin/kv";
+import type { DayRecord, SpecialItem } from "./admin/types";
 import { schemaOpeningHoursSpecification } from "./hours";
 
 /**
@@ -99,6 +102,44 @@ export function buildMenuSchema(r: RestaurantContent, siteUrl: string) {
   };
 }
 
+/**
+ * Build a MenuSection from today's specials. Returns null when nothing is active so the
+ * caller can omit the section entirely. Specials prices use the same numeric parsing as
+ * the regular menu items (parsePriceDecimal); items without parseable prices still appear
+ * with `name` only, no Offer.
+ */
+function buildSpecialItem(item: SpecialItem, siteUrl: string, photoUrl: string | null) {
+  const decimal = parsePriceDecimal(item.price);
+  const offers = decimal
+    ? { "@type": "Offer", price: decimal, priceCurrency: "USD" as const }
+    : null;
+  return {
+    "@type": "MenuItem",
+    name: item.name,
+    ...(photoUrl ? { image: photoUrl } : {}),
+    ...(offers ? { offers } : {}),
+  };
+}
+
+function buildTodaysSpecialsSection(
+  record: DayRecord,
+  siteUrl: string
+): Record<string, unknown> {
+  const photoUrl = record.photo
+    ? record.photo.jpgUrl.startsWith("http")
+      ? record.photo.jpgUrl
+      : `${siteUrl}${record.photo.jpgUrl}`
+    : null;
+  return {
+    "@type": "MenuSection",
+    name: "Today's Specials",
+    ...(record.description ? { description: record.description } : {}),
+    hasMenuItem: record.items
+      .filter((i) => i.name.trim().length > 0)
+      .map((i) => buildSpecialItem(i, siteUrl, photoUrl)),
+  };
+}
+
 /** Build a Schema.org Restaurant + LocalBusiness JSON-LD object for the home page. */
 export function restaurantJsonLd(r: RestaurantContent, siteUrl: string) {
   // sameAs lists every authoritative profile for the same real-world entity so Google
@@ -154,8 +195,9 @@ export function restaurantJsonLd(r: RestaurantContent, siteUrl: string) {
     // the 4:30 PM open time per the current schedule.
     openingHoursSpecification: schemaOpeningHoursSpecification(r.hours),
     // Full Menu entity — sections, items, prices — built programmatically from the same
-    // content/restaurant.ts data the visible menu reads from. Replaces the prior bare URL
-    // string so each MenuItem has machine-readable name/description/Offer.
+    // content/restaurant.ts data the visible menu reads from. The synchronous variant
+    // omits today's specials; use `restaurantJsonLdWithSpecials` (below) when you want
+    // the live KV-driven Today's Specials MenuSection mixed in.
     hasMenu: buildMenuSchema(r, siteUrl),
     sameAs,
     // aggregateRating intentionally NOT emitted. The visible "1,200+ reviews · 4.6 stars"
@@ -164,6 +206,41 @@ export function restaurantJsonLd(r: RestaurantContent, siteUrl: string) {
     // reflect first-party reviews displayed on the page — and the page only shows 3
     // testimonial quotes. Emitting it would risk a manual action or silent demotion.
     // Re-enable only when first-party review volume justifies a real on-page rating.
+  };
+}
+
+/**
+ * Async variant of `restaurantJsonLd` that mixes today's specials (read live from KV) in
+ * as an additional MenuSection on the Menu entity. Used by the homepage so the JSON-LD
+ * surfaces today's published specials alongside the regular menu.
+ *
+ * KV failures degrade silently — if the admin layer isn't configured (e.g. local dev
+ * without env vars), the function returns the same shape as the synchronous variant so
+ * the homepage still renders schema correctly.
+ */
+export async function restaurantJsonLdWithSpecials(
+  r: RestaurantContent,
+  siteUrl: string
+) {
+  const base = restaurantJsonLd(r, siteUrl);
+  let todays: DayRecord | null = null;
+  try {
+    todays = await getDay(todayInNY());
+  } catch {
+    todays = null;
+  }
+  if (!todays || !todays.active || todays.items.length === 0) {
+    return base;
+  }
+  const specialsSection = buildTodaysSpecialsSection(todays, siteUrl);
+  // Today's specials section gets prepended so it surfaces above the regular menu.
+  const existing = base.hasMenu.hasMenuSection ?? [];
+  return {
+    ...base,
+    hasMenu: {
+      ...base.hasMenu,
+      hasMenuSection: [specialsSection, ...existing],
+    },
   };
 }
 
